@@ -164,9 +164,9 @@ app.get("/admin", requireAdmin, (req, res) => {
 
                   res.render("admin", {
                     requests,
-                    safeCount: (safeCount && safeCount.count) || 0,
-                    criticalCount: (criticalData && criticalData.criticalCount) || 0,
-                    highCount: (highData && highData.highCount) || 0,
+                    safeCount: safeCount.count,
+                    criticalCount: criticalData.criticalCount,
+                    highCount: highData.highCount,
                   });
                 },
               );
