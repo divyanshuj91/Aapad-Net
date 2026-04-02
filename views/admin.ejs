@@ -10,17 +10,77 @@
 
 <body class="bg-gray-900 text-white min-h-screen p-4">
 
-    <div class="mb-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
-        <div>
-            <h1 class="text-3xl font-bold text-red-500">🛠 Aapad-Net Control Panel</h1>
-            <p class="text-gray-400 text-sm">Live Emergency Requests</p>
-        </div>
-        <a href="/logout"
-            class="text-red-600 bg-gray-700 hover:bg-red-600 hover:text-white px-4 py-2 rounded-lg tracking-wide text-sm">
-            Logout
-        </a>
-    </div>
+    <div class="mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-end gap-5 border-b border-gray-800 pb-5">
 
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-bold text-white flex items-center gap-3">
+                <svg class="w-8 h-8 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4">
+                    </path>
+                </svg>
+                Aapad-Net Control Panel
+            </h1>
+            <p class="text-gray-400 text-sm mt-1">Live Emergency Requests & Operations</p>
+        </div>
+
+        <div class="flex items-center gap-3 w-full sm:w-auto">
+
+            <a href="/admin"
+                class="flex-1 sm:flex-none flex justify-center items-center gap-2 bg-gray-800 border border-gray-700 hover:bg-gray-700 text-blue-400 hover:text-blue-300 px-5 py-2.5 rounded-xl text-sm font-semibold transition shadow-sm">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
+                    </path>
+                </svg>
+                Refresh
+            </a>
+
+            <a href="/logout"
+                class="flex-1 sm:flex-none flex justify-center items-center gap-2 bg-red-500/10 border border-red-500/20 hover:bg-red-600 text-red-500 hover:text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition shadow-sm group">
+                <svg class="w-4 h-4 group-hover:text-white transition-colors" fill="none" stroke="currentColor"
+                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                    </path>
+                </svg>
+                Logout
+            </a>
+        </div>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+
+        <div class="bg-green-600 rounded-xl p-4 text-center">
+            <p class="text-sm opacity-80">Safe People</p>
+            <p class="text-2xl font-bold">
+                <%= safeCount %>
+            </p>
+        </div>
+
+        <div class="bg-red-600 rounded-xl p-4 text-center">
+            <p class="text-sm opacity-80">Critical</p>
+            <p class="text-2xl font-bold">
+                <%= criticalCount %>
+            </p>
+        </div>
+
+        <div class="bg-yellow-500 text-black rounded-xl p-4 text-center">
+            <p class="text-sm opacity-80">High</p>
+            <p class="text-2xl font-bold">
+                <%= highCount %>
+            </p>
+        </div>
+
+        <div class="bg-gray-700 rounded-xl p-4 text-center">
+            <p class="text-sm opacity-80">Total Requests</p>
+            <p class="text-2xl font-bold">
+                <%= requests.length %>
+            </p>
+        </div>
+
+    </div>
     <div class="space-y-4">
 
         <% if (!requests || requests.length===0) { %>
@@ -41,12 +101,19 @@
                                 </p>
                             </div>
 
-                            <div>
+                            <div class="flex gap-2">
+                                <% if (request.status === "in_progress") { %>
+                                    <span class="bg-blue-600 px-3 py-1 text-sm rounded-full w-max h-min">In Progress</span>
+                                <% } else if (request.status === "resolved") { %>
+                                    <span class="bg-green-600 px-3 py-1 text-sm rounded-full w-max h-min">Resolved</span>
+                                <% } else { %>
+                                    <span class="bg-gray-600 px-3 py-1 text-sm rounded-full w-max h-min">Pending</span>
+                                <% } %>
                                 <% if (request.type==="medical" ) { %>
-                                    <span class="bg-red-600 px-3 py-1 text-sm rounded-full">Critical</span>
+                                    <span class="bg-red-600 px-3 py-1 text-sm rounded-full w-max h-min">Critical</span>
                                     <% } else { %>
                                         <span
-                                            class="bg-yellow-500 text-black px-3 py-1 text-sm rounded-full">High</span>
+                                            class="bg-yellow-500 text-black px-3 py-1 text-sm rounded-full w-max h-min">High</span>
                                         <% } %>
                             </div>
                         </div>
@@ -64,12 +131,16 @@
                         </div>
 
                         <div class="mt-4 flex gap-3 flex-wrap">
-                            <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm">
-                                Mark In Progress
-                            </button>
-                            <button class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm">
-                                Mark Resolved
-                            </button>
+                            <% if (request.status !== "resolved") { %>
+                                <% if (request.status !== "in_progress") { %>
+                                <button onclick="updateRequestStatus(<%= request.id %>, 'in_progress')" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm transition focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                    Mark In Progress
+                                </button>
+                                <% } %>
+                                <button onclick="updateRequestStatus(<%= request.id %>, 'resolved')" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm transition focus:ring-2 focus:ring-green-500 focus:outline-none">
+                                    Mark Resolved
+                                </button>
+                            <% } %>
                         </div>
 
                     </div>
@@ -78,6 +149,26 @@
 
     </div>
 
+    <script>
+        async function updateRequestStatus(id, status) {
+            try {
+                const response = await fetch(`/admin/request/${id}/status`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+                
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    alert('Failed to update status');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Error updating status');
+            }
+        }
+    </script>
 </body>
 <script src="https://cdn.tailwindcss.com"></script>
 
