@@ -1,0 +1,49 @@
+AapatNet/
+│
+├── server.js
+├── database.db (auto created)
+│
+├── views/
+│     ├── index.ejs
+│     ├── safe.ejs
+│     ├── request.ejs
+│     ├── admin.ejs
+│
+└── public/
+      └── style.css
+
+
+
+🧩 Build In This Order
+Don’t try to build everything at once.
+Day 1
+✔ Server running
+✔ Homepage visible
+Day 2
+✔ “I Am Safe” form
+✔ Data saved in SQLite
+Day 3
+✔ Resource request form
+✔ Data stored
+Day 4
+✔ Admin dashboard (show data in table)
+Day 5
+✔ Styling + polish
+Day 6
+✔ Testing + edge cases
+
+
+🚀 Extra Buttons You SHOULD Add
+
+If this is serious disaster system, consider:
+
+🗺 1. View Safe Routes
+🧭 Find Safe Route
+🏥 2. Nearby Shelters
+🏠 Find Shelter
+📍 3. Report Hazard
+⚠️ Report Blocked Road / Danger
+📢 4. Live Alerts
+📡 View Live Alerts
+📊 5. Volunteer / Rescue Dashboard (Admin side)
+👷 Rescue Coordination
