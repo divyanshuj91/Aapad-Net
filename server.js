@@ -54,6 +54,11 @@ app.get("/safe", (req, res) => {
   res.render("safe", { status: "Safe" });
 });
 
+// Report Page
+app.get("/report", (req, res) => {
+  res.render("report");
+});
+
 // Request form page
 app.get("/request", (req, res) => {
   res.render("request");
