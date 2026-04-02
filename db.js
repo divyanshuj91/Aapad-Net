@@ -32,19 +32,20 @@ const db = new sqlite3.Database(dbPath, async (err) => {
       type TEXT,
       location TEXT,
       urgency TEXT,
-      status TEXT DEFAULT 'pending',
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `);
+
+  // Create admins table
   db.run(`
-  CREATE TABLE IF NOT EXISTS safe_people (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    location TEXT,
-    message TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-  )
-`);
+    CREATE TABLE IF NOT EXISTS admins (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT UNIQUE NOT NULL,
+      password TEXT NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  `);
+
   // Optional: Index for faster sorting by date
   db.run(`
     CREATE INDEX IF NOT EXISTS idx_requests_created_at 
