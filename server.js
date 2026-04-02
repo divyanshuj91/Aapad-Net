@@ -51,27 +51,7 @@ app.get("/", (req, res) => {
 
 // Safe page
 app.get("/safe", (req, res) => {
-  res.render("safe");
-});
-app.post("/safe", (req, res) => {
-  const { name, location } = req.body;
-
-  if (!name) {
-    return res.status(400).send("Name required");
-  }
-
-  db.run(
-    "INSERT INTO safe_people (name, location) VALUES (?, ?)",
-    [name, location],
-    function (err) {
-      if (err) {
-        console.error(err);
-        return res.status(500).send("Database error");
-      }
-
-      res.json({ success: true, id: this.lastID });
-    },
-  );
+  res.render("safe", { status: "Safe" });
 });
 
 // Report Page
@@ -134,70 +114,14 @@ app.post("/login", (req, res) => {
 
 // Admin panel
 app.get("/admin", requireAdmin, (req, res) => {
-  if (!req.session.isAdmin) {
-    return res.redirect("/login");
-  }
-
-  db.all(
-    "SELECT * FROM requests ORDER BY created_at DESC",
-    [],
-    (err, requests) => {
-      if (err) return res.status(500).send("Database error");
-
-      db.get(
-        "SELECT COUNT(*) as count FROM safe_people",
-        [],
-        (err2, safeCount) => {
-          if (err2) return res.status(500).send("Database error");
-
-          db.get(
-            "SELECT COUNT(*) as criticalCount FROM requests WHERE urgency = 'critical'",
-            [],
-            (err3, criticalData) => {
-              if (err3) return res.status(500).send("Database error");
-
-              db.get(
-                "SELECT COUNT(*) as highCount FROM requests WHERE urgency = 'high'",
-                [],
-                (err4, highData) => {
-                  if (err4) return res.status(500).send("Database error");
-
-                  res.render("admin", {
-                    requests,
-                    safeCount: safeCount.count,
-                    criticalCount: criticalData.criticalCount,
-                    highCount: highData.highCount,
-                  });
-                },
-              );
-            },
-          );
-        },
-      );
-    },
-  );
-});
-
-// Update request status
-app.post("/admin/request/:id/status", requireAdmin, (req, res) => {
-  const { id } = req.params;
-  const { status } = req.body;
-
-  if (!["in_progress", "resolved"].includes(status)) {
-    return res.status(400).send("Invalid status");
-  }
-
-  db.run(
-    "UPDATE requests SET status = ? WHERE id = ?",
-    [status, id],
-    function (err) {
-      if (err) {
-        console.error(err);
-        return res.status(500).send("Database error");
-      }
-      res.json({ success: true });
+  db.all("SELECT * FROM requests ORDER BY created_at DESC", [], (err, rows) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Database error");
     }
-  );
+
+    res.render("admin", { requests: rows });
+  });
 });
 
 // Logout
