@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aapad-Net | Emergency Request</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-4">
+
+    <div class="w-full max-w-md bg-gray-800 rounded-2xl shadow-xl p-6 space-y-6">
+
+        <!-- Header -->
+        <div class="text-center">
+            <h1 class="text-3xl font-bold text-red-500 tracking-wide">🚨 Emergency Request</h1>
+            <p class="text-sm text-gray-400 mt-2">
+                Submit only if immediate assistance is required
+            </p>
+        </div>
+
+        <!-- Form -->
+        <form id="form" class="space-y-4">
+
+            <!-- Name -->
+            <div>
+                <label class="block text-sm mb-1 text-gray-300">Full Name</label>
+                <input type="text" id="name" required
+                    class="w-full px-4 py-3 bg-gray-700 rounded-lg border border-gray-600 focus:ring-2 focus:ring-red-500 outline-none"
+                    placeholder="Your name">
+            </div>
+
+            <!-- Contact -->
+            <div>
+                <label class="block text-sm mb-1 text-gray-300">Phone Number</label>
+                <input type="tel" id="phone"
+                    class="w-full px-4 py-3 bg-gray-700 rounded-lg border border-gray-600 focus:ring-2 focus:ring-red-500 outline-none"
+                    placeholder="Optional but recommended">
+            </div>
+
+            <!-- Type of Help -->
+            <div>
+                <label class="block text-sm mb-2 text-gray-300">Type of Assistance Needed</label>
+                <select id="type"
+                    class="w-full px-4 py-3 bg-gray-700 rounded-lg border border-gray-600 focus:ring-2 focus:ring-red-500 outline-none">
+                    <option value="medical">Medical Emergency</option>
+                    <option value="food">Food & Water</option>
+                    <option value="rescue">Rescue Required</option>
+                    <option value="shelter">Shelter Needed</option>
+                </select>
+            </div>
+
+            <!-- Location -->
+            <div>
+                <label class="block text-sm mb-1 text-gray-300">Current Location / Landmark</label>
+                <textarea id="location" rows="2"
+                    class="w-full px-4 py-3 bg-gray-700 rounded-lg border border-gray-600 focus:ring-2 focus:ring-red-500 outline-none"
+                    placeholder="Describe nearby landmark"></textarea>
+            </div>
+
+            <!-- Urgency -->
+            <div>
+                <label class="block text-sm mb-2 text-gray-300">Urgency Level</label>
+
+                <!-- Hidden input to store selected value -->
+                <input type="hidden" id="urgency" name="urgency" value="">
+
+                <div class="flex gap-3">
+                    <button type="button" data-value="high"
+                        class="urgency-btn flex-1 bg-gray-700 py-2 rounded-lg font-semibold border border-gray-600">
+                        High
+                    </button>
+
+                    <button type="button" data-value="critical"
+                        class="urgency-btn flex-1 bg-gray-700 py-2 rounded-lg font-semibold border border-gray-600">
+                        Critical
+                    </button>
+                </div>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit"
+                class="w-full bg-red-600 hover:bg-red-700 transition py-3 rounded-xl font-bold text-lg">
+                Send Emergency Alert
+            </button>
+
+        </form>
+
+        <!-- Back -->
+        <div class="text-center">
+            <a href="/" class="text-sm text-gray-400 hover:text-white">← Back to Status</a>
+        </div>
+
+    </div>
+
+    <script>
+        const buttons = document.querySelectorAll(".urgency-btn");
+        const hiddenInput = document.getElementById("urgency");
+        const form = document.getElementById("form");
+
+
+        buttons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                buttons.forEach(b => {
+                    b.classList.remove("bg-yellow-500", "bg-red-600", "text-black", "text-white");
+                    b.classList.add("bg-gray-700", "text-white");
+                });
+
+                // Apply active style to the clicked button
+                if (btn.dataset.value === "high") {
+                    btn.classList.remove("bg-gray-700", "text-white");
+                    btn.classList.add("bg-yellow-500", "text-black");
+                } else if (btn.dataset.value === "critical") {
+                    btn.classList.remove("bg-gray-700");
+                    btn.classList.add("bg-red-600", "text-white");
+                }
+
+                // Store value in the hidden input
+                hiddenInput.value = btn.dataset.value;
+            });
+        });
+
+        // 3. Handle Form Submission
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const data = {
+                name: document.getElementById("name").value,
+                phone: document.getElementById("phone").value,
+                type: document.getElementById("type").value,
+                location: document.getElementById("location").value,
+                urgency: hiddenInput.value
+            };
+
+            if (!data.urgency && !data.type) {
+                alert("Please select urgency level");
+                return;
+            }
+
+            try {
+                await fetch("/request", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+
+                alert("Emergency Alert Sent!");
+
+
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Failed to send alert. Please try again.");
+            }
+        });
+    </script>
+
+</body>
+
+</html>

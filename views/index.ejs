@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body class="font-sans bg-black p-8 flex flex-col col-2 min-h-screen">
+    <div class="flex justify-between items-center px-8 py-4 bg-slate-900 shadow-md">
+        <div>
+            <span class="text-slate-200">Server Status:</span>
+            <span class="<%= statusClass %> font-semibold">
+                <%= status %>
+            </span>
+        </div>
+        <div
+            class="bg-slate-900 px-6 py-8 flex flex-col items-center justify-center text-center border-b border-slate-800">
+
+            <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-red-500 mb-2">
+                Aapad<span class="text-slate-100">-Net</span>
+            </h1>
+
+            <h2 class=" text-lg sm:text-xl font-medium text-slate-400">
+                Disaster Response Portal
+            </h2>
+
+        </div>
+        <div
+            class="inline-flex items-center gap-3 bg-slate-800 border border-slate-700 px-5 py-2.5 rounded-full shadow-sm">
+            <span class="text-red-500 text-sm font-bold tracking-wider">ADMIN?</span>
+
+            <span class="text-slate-600">|</span>
+
+            <a href="/login"
+                class="text-cyan-400 hover:text-cyan-300 text-sm font-semibold transition flex items-center gap-1">
+                Login here <span aria-hidden="true">→</span>
+            </a>
+        </div>
+
+    </div>
+
+    <section class="min-h-screen flex flex-col justify-center items-center bg-slate-900 text-white px-4 sm:px-6">
+
+        <p class="text-slate-300 text-lg mb-10">
+            Tell us your situation so we can respond quickly and effectively.
+        </p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-6 w-full max-w-4xl">
+
+            <!-- I NEED HELP (Priority Button) -->
+            <a href="/request" class="bg-red-600 hover:bg-red-700 text-white py-8 rounded-2xl shadow-xl 
+              text-2xl font-bold text-center transition transform hover:scale-105 animate-pulse">
+                🚨 I Need Immediate Help
+            </a>
+
+            <!-- I AM SAFE -->
+            <a href="/safe" class="bg-green-600 hover:bg-green-700 text-white py-8 rounded-2xl shadow-lg 
+              text-xl font-semibold text-center transition transform hover:scale-105">
+                ✅ I Am Safe
+            </a>
+
+            <!-- Reporting Obstacle -->
+            <a href="/report" class="bg-amber-400 hover:bg-amber-500 text-black py-8 rounded-2xl shadow-lg 
+              text-xl font-semibold text-center transition transform hover:scale-105">
+                Report Hazard/ Blocked Road/ Danger
+            </a>
+        </div>
+
+    </section>
+</body>
+<script>
+    if (window.location.hostname !== "192.168.137.1") {
+        window.location.href = "http://192.168.137.1";
+    }
+</script>
+
+</html>
