@@ -102,21 +102,26 @@
                             </div>
 
                             <div class="flex flex-col items-end gap-2">
-                                <% if (request.urgency === "critical") { %>
+                                <% if (request.urgency==="critical" ) { %>
                                     <span class="bg-red-600 px-3 py-1 text-sm rounded-full">Critical</span>
-                                <% } else if (request.urgency === "high") { %>
-                                    <span class="bg-yellow-500 text-black px-3 py-1 text-sm rounded-full">High</span>
-                                <% } else { %>
-                                    <span class="bg-gray-500 text-white px-3 py-1 text-sm rounded-full">Normal</span>
-                                <% } %>
+                                    <% } else if (request.urgency==="high" ) { %>
+                                        <span
+                                            class="bg-yellow-500 text-black px-3 py-1 text-sm rounded-full">High</span>
+                                        <% } else { %>
+                                            <span
+                                                class="bg-gray-500 text-white px-3 py-1 text-sm rounded-full">Normal</span>
+                                            <% } %>
 
-                                <% if (request.status === 'in_progress') { %>
-                                    <span class="bg-blue-600 px-3 py-1 text-sm rounded-full">In Progress</span>
-                                <% } else if (request.status === 'resolved') { %>
-                                    <span class="bg-green-600 px-3 py-1 text-sm rounded-full">Resolved</span>
-                                <% } else { %>
-                                    <span class="bg-gray-600 px-3 py-1 text-sm rounded-full">Pending</span>
-                                <% } %>
+                                                <% if (request.status==='in_progress' ) { %>
+                                                    <span class="bg-blue-600 px-3 py-1 text-sm rounded-full">In
+                                                        Progress</span>
+                                                    <% } else if (request.status==='resolved' ) { %>
+                                                        <span
+                                                            class="bg-green-600 px-3 py-1 text-sm rounded-full">Resolved</span>
+                                                        <% } else { %>
+                                                            <span
+                                                                class="bg-gray-600 px-3 py-1 text-sm rounded-full">Pending</span>
+                                                            <% } %>
                             </div>
                         </div>
 
@@ -133,16 +138,18 @@
                         </div>
 
                         <div class="mt-4 flex gap-3 flex-wrap">
-                            <% if (request.status !== 'in_progress' && request.status !== 'resolved') { %>
-                            <button onclick="updateStatus('<%= request.id %>', 'in_progress')" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm transition">
-                                Mark In Progress
-                            </button>
-                            <% } %>
-                            <% if (request.status !== 'resolved') { %>
-                            <button onclick="updateStatus('<%= request.id %>', 'resolved')" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm transition">
-                                Mark Resolved
-                            </button>
-                            <% } %>
+                            <% if (request.status !=='in_progress' && request.status !=='resolved' ) { %>
+                                <button onclick="updateStatus('<%= request.id %>', 'in_progress')"
+                                    class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm transition">
+                                    Mark In Progress
+                                </button>
+                                <% } %>
+                                    <% if (request.status !=='resolved' ) { %>
+                                        <button onclick="updateStatus('<%= request.id %>', 'resolved')"
+                                            class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm transition">
+                                            Mark Resolved
+                                        </button>
+                                        <% } %>
                         </div>
 
                     </div>
@@ -156,7 +163,7 @@
 <script>
     async function updateStatus(id, status) {
         if (!confirm(`Are you sure you want to mark this request as ${status.replace('_', ' ')}?`)) return;
-        
+
         try {
             const res = await fetch(`/admin/request/${id}/status`, {
                 method: 'POST',
@@ -175,4 +182,5 @@
         }
     }
 </script>
+
 </html>

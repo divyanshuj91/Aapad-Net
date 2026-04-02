@@ -164,9 +164,9 @@ app.get("/admin", requireAdmin, (req, res) => {
 
                   res.render("admin", {
                     requests,
-                    safeCount: safeCount.count,
-                    criticalCount: criticalData.criticalCount,
-                    highCount: highData.highCount,
+                    safeCount: (safeCount && safeCount.count) || 0,
+                    criticalCount: (criticalData && criticalData.criticalCount) || 0,
+                    highCount: (highData && highData.highCount) || 0,
                   });
                 },
               );
@@ -192,13 +192,17 @@ app.post("/admin/request/:id/status", requireAdmin, (req, res) => {
     return res.status(400).send("Invalid status");
   }
 
-  db.run("UPDATE requests SET status = ? WHERE id = ?", [status, id], function (err) {
-    if (err) {
-      console.error(err);
-      return res.status(500).send("Database error");
-    }
-    res.json({ success: true });
-  });
+  db.run(
+    "UPDATE requests SET status = ? WHERE id = ?",
+    [status, id],
+    function (err) {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Database error");
+      }
+      res.json({ success: true });
+    },
+  );
 });
 
 // --------------------
