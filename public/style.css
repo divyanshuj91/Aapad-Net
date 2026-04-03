@@ -24,6 +24,9 @@
 .table {
   display: table;
 }
+.h-full {
+  height: 100%;
+}
 .h-min {
   height: min-content;
 }
@@ -38,6 +41,12 @@
 }
 .flex-1 {
   flex: 1;
+}
+.flex-shrink {
+  flex-shrink: 1;
+}
+.shrink-0 {
+  flex-shrink: 0;
 }
 .transform {
   transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
@@ -66,6 +75,9 @@
 .justify-center {
   justify-content: center;
 }
+.overflow-hidden {
+  overflow: hidden;
+}
 .rounded-full {
   border-radius: calc(infinity * 1px);
 }
@@ -80,6 +92,9 @@
 .bg-gradient-to-br {
   --tw-gradient-position: to bottom right in oklab;
   background-image: linear-gradient(var(--tw-gradient-stops));
+}
+.object-cover {
+  object-fit: cover;
 }
 .text-center {
   text-align: center;
@@ -104,6 +119,17 @@
 .outline-none {
   --tw-outline-style: none;
   outline-style: none;
+}
+.file\:cursor-pointer {
+  &::file-selector-button {
+    cursor: pointer;
+  }
+}
+.file\:border-0 {
+  &::file-selector-button {
+    border-style: var(--tw-border-style);
+    border-width: 0px;
+  }
 }
 .hover\:scale-\[1\.02\] {
   &:hover {

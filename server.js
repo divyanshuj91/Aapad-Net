@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import session from "express-session";
 import db from "./db.js";
-
+import multer from "multer";
 const app = express();
 
 // --------------------
@@ -12,7 +12,7 @@ app.use(cors());
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
+app.use("/uploads", express.static("uploads"));
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -83,30 +83,58 @@ app.get("/report", (req, res) => {
 app.get("/request", (req, res) => {
   res.render("request");
 });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
 
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Only images allowed"));
+    }
+  },
+});
 // Handle request submission
-app.post("/request", (req, res) => {
+app.post("/request", upload.single("image"), (req, res) => {
   const { name, phone, type, location, urgency } = req.body;
 
   if (!name) {
     return res.status(400).send("Name required");
   }
 
-  const query =
-    "INSERT INTO requests (name, phone, type, location, urgency) VALUES (?, ?, ?, ?, ?)";
+  const imagePath = req.file ? req.file.filename : null;
 
-  db.run(query, [name, phone, type, location, urgency], function (err) {
-    if (err) {
-      console.error(err);
-      return res.status(500).send("Database error");
-    }
+  const query = `
+    INSERT INTO requests 
+    (name, phone, type, location, urgency, image) 
+    VALUES (?, ?, ?, ?, ?, ?)
+  `;
 
-    res.json({
-      success: true,
-      message: "Request submitted successfully",
-      id: this.lastID,
-    });
-  });
+  db.run(
+    query,
+    [name, phone, type, location, urgency, imagePath],
+    function (err) {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Database error");
+      }
+
+      res.json({
+        success: true,
+        message: "Request submitted successfully",
+        id: this.lastID,
+      });
+    },
+  );
 });
 
 // Login page
@@ -196,7 +224,7 @@ app.post("/admin/request/:id/status", requireAdmin, (req, res) => {
         return res.status(500).send("Database error");
       }
       res.json({ success: true });
-    }
+    },
   );
 });
 
@@ -212,6 +240,6 @@ app.get("/logout", (req, res) => {
 // --------------------
 const port = 3000;
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
   console.log(`🚀 Server running on http://localhost:${port}`);
 });
