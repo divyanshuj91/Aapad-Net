@@ -60,24 +60,36 @@
             </a>
 
             <a href="/safe" class="bg-green-600 hover:bg-green-700 text-white py-5 sm:py-6 rounded-2xl shadow-lg 
-              text-lg sm:text-xl font-semibold text-center transition transform hover:scale-[1.02] active:scale-95">
+    text-lg sm:text-xl font-semibold text-center transition transform hover:scale-[1.02] active:scale-95">
                 ✅ I Am Safe
             </a>
 
             <a href="/report"
                 class="bg-amber-500 hover:bg-amber-600 text-black py-5 sm:py-6 rounded-2xl shadow-lg 
-              text-lg sm:text-xl font-semibold text-center transition transform hover:scale-[1.02] active:scale-95 flex flex-col items-center justify-center leading-tight px-2">
+    text-lg sm:text-xl font-semibold text-center transition transform hover:scale-[1.02] active:scale-95 flex flex-col items-center justify-center leading-tight px-2">
                 <span>🚧 Report Hazard</span>
                 <span class="text-sm font-medium opacity-80 mt-1">(Blocked Road / Danger)</span>
+            </a>
+
+            <a href="/assist"
+                class="bg-lime-500 hover:bg-lime-600 text-black py-5 sm:py-6 rounded-2xl shadow-lg 
+    text-lg sm:text-xl font-semibold text-center transition transform hover:scale-[1.02] active:scale-95 flex flex-col items-center justify-center leading-tight px-2">
+                <span>🆘 Assist Others</span>
+                <span class="text-sm font-medium opacity-80 mt-1">(Provide Help / Alert Authorities)</span>
             </a>
 
         </div>
 
     </main>
 
-    <script src="https://cdn.tailwindcss.com">
-        if (window.location.hostname !== "192.168.137.1" && window.location.hostname !== "localhost") {
-            window.location.href = "http://192.168.137.1";
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        if (
+            window.location.hostname !== "192.168.137.1" &&
+            window.location.hostname !== "localhost"
+        ) {
+            window.location.href = "http://192.168.137.1:3000";
         }
     </script>
 
