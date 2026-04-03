@@ -34,3 +34,4 @@ npm-debug.log*
 .cache/
 .temp/
 database.sqlite
+alter.js
