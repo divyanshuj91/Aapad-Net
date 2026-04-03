@@ -39,41 +39,59 @@
 
     <main class="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-10">
 
-        <div class="text-center mb-10">
-            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-red-500 mb-2">
-                Aapad<span class="text-slate-100">-Net</span>
+        <div class="text-center mb-12 flex flex-col items-center">
+            <h1 class="text-5xl sm:text-7xl font-extrabold tracking-tight mb-3">
+                <span
+                    class="bg-gradient-to-r from-red-600 via-red-500 to-orange-500 text-transparent bg-clip-text drop-shadow-sm">
+                    Aapad
+                </span>
+                <span
+                    class="bg-gradient-to-br from-slate-100 via-slate-300 to-slate-500 text-transparent bg-clip-text ml-[-8px]">
+                    -Net
+                </span>
             </h1>
-            <h2 class="text-base sm:text-xl font-medium text-slate-400 mb-6">
-                Disaster Response Portal
+
+            <h2 class="text-sm sm:text-base font-bold text-slate-400 tracking-[0.25em] uppercase mb-8">
+                Offline Disaster Response Portal
             </h2>
-            <p class="text-slate-300 text-sm sm:text-base max-w-md mx-auto">
-                Tell us your situation so we can respond quickly and effectively.
+
+            <p
+                class="text-slate-300 text-sm sm:text-base max-w-md mx-auto leading-relaxed bg-slate-800/40 border border-slate-700/50 px-6 py-4 rounded-2xl shadow-inner">
+                <span class="block text-emerald-400 font-bold tracking-wide mb-1.5">
+                    <span class="inline-block w-2 h-2 bg-emerald-500 rounded-full mr-1.5 animate-pulse"></span>
+                    You are connected.
+                </span>
+
+                <span class="block text-slate-300/90">
+                    Tell us your situation so we can respond quickly and effectively.
+                </span>
             </p>
+
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 w-full max-w-3xl">
 
             <a href="/request"
-                class="sm:col-span-2 bg-red-600 hover:bg-red-700 text-white py-6 sm:py-8 rounded-2xl shadow-xl 
+                class="sm:col-span-2 bg-gradient-to-b bg-red-600 hover:bg-red-700 text-white py-6 sm:py-8 rounded-2xl shadow-xl 
               text-xl sm:text-2xl font-bold text-center transition transform hover:scale-[1.02] active:scale-95 animate-pulse">
                 🚨 I Need Immediate Help
             </a>
 
-            <a href="/safe" class="bg-green-600 hover:bg-green-700 text-white py-5 sm:py-6 rounded-2xl shadow-lg 
+            <a href="/safe" class="bg-gradient-to-br bg-green-600 hover:bg-green-700 text-white py-5 sm:py-6 rounded-2xl shadow-lg 
     text-lg sm:text-xl font-semibold text-center transition transform hover:scale-[1.02] active:scale-95">
                 ✅ I Am Safe
             </a>
 
             <a href="/report"
-                class="bg-amber-500 hover:bg-amber-600 text-black py-5 sm:py-6 rounded-2xl shadow-lg 
+                class="bg-gradient-to-b bg-amber-500 hover:bg-amber-600 text-black py-5 sm:py-6 rounded-2xl shadow-lg 
     text-lg sm:text-xl font-semibold text-center transition transform hover:scale-[1.02] active:scale-95 flex flex-col items-center justify-center leading-tight px-2">
                 <span>🚧 Report Hazard</span>
                 <span class="text-sm font-medium opacity-80 mt-1">(Blocked Road / Danger)</span>
             </a>
 
-            <a href="/assist"
-                class="bg-lime-500 hover:bg-lime-600 text-black py-5 sm:py-6 rounded-2xl shadow-lg 
-    text-lg sm:text-xl font-semibold text-center transition transform hover:scale-[1.02] active:scale-95 flex flex-col items-center justify-center leading-tight px-2">
+            <a href="/assist" class="bg-gradient-to-b from-cyan-600 to-blue-800 text-white py-5 sm:py-6 rounded-2xl
+                shadow-lg text-lg sm:text-xl font-semibold text-center transition transform hover:scale-[1.02]
+                active:scale-95 flex flex-col items-center justify-center leading-tight px-2">
                 <span>🆘 Assist Others</span>
                 <span class="text-sm font-medium opacity-80 mt-1">(Provide Help / Alert Authorities)</span>
             </a>
