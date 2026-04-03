@@ -89,90 +89,103 @@
             </div>
             <% } else { %>
                 <% requests.forEach(request=> { %>
-                    <div class="bg-gray-800 rounded-2xl p-5 shadow-lg border border-gray-700">
+                    <div
+                        class="bg-gray-800 rounded-2xl p-5 shadow-lg border border-gray-700 flex flex-col md:flex-row gap-6">
+                        <div class="flex-1">
+                            <div class="flex justify-between items-start gap-4">
+                                <div>
+                                    <h2 class="text-xl font-semibold">
+                                        <%= request.name %>
+                                    </h2>
+                                    <p class="text-sm text-gray-400">
+                                        <%= new Date(request.created_at.replace(' ', 'T') + 'Z' ).toLocaleString('en-US', {
+                                            dateStyle: 'medium' , timeStyle: 'short' }) %>
+                                    </p>
+                                </div>
 
-                        <div class="flex justify-between items-start gap-4">
-                            <div>
-                                <h2 class="text-xl font-semibold">
-                                    <%= request.name %>
-                                </h2>
-                                <p class="text-sm text-gray-400">
-                                    <%= request.created_at %>
+                                <div class="flex gap-2">
+                                    <% if (request.status==="in_progress" ) { %>
+                                        <span class="bg-blue-600 px-3 py-1 text-sm rounded-full w-max h-min">In
+                                            Progress</span>
+                                        <% } else if (request.status==="resolved" ) { %>
+                                            <span
+                                                class="bg-green-600 px-3 py-1 text-sm rounded-full w-max h-min">Resolved</span>
+                                            <% } else { %>
+                                                <span
+                                                    class="bg-gray-600 px-3 py-1 text-sm rounded-full w-max h-min">Pending</span>
+                                                <% } %>
+                                                    <% if (request.urgency === 'critical' || (!request.urgency && request.type === 'medical')) { %>
+                                                        <span
+                                                            class="bg-red-600 px-3 py-1 text-sm rounded-full w-max h-min">Critical</span>
+                                                    <% } else { %>
+                                                        <span
+                                                            class="bg-yellow-500 text-black px-3 py-1 text-sm rounded-full w-max h-min">High</span>
+                                                    <% } %>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 text-sm text-gray-300 space-y-1">
+                                <p><strong>Type:</strong>
+                                    <%= request.type %>
+                                </p>
+                                <p><strong>Phone:</strong>
+                                    <%= request.phone || "Not provided" %>
+                                </p>
+                                <p><strong>Location:</strong>
+                                    <%= request.location || "Unknown" %>
                                 </p>
                             </div>
 
-                            <div class="flex flex-col items-end gap-2">
-                                <% if (request.urgency === "critical") { %>
-                                    <span class="bg-red-600 px-3 py-1 text-sm rounded-full">Critical</span>
-                                <% } else if (request.urgency === "high") { %>
-                                    <span class="bg-yellow-500 text-black px-3 py-1 text-sm rounded-full">High</span>
-                                <% } else { %>
-                                    <span class="bg-gray-500 text-white px-3 py-1 text-sm rounded-full">Normal</span>
-                                <% } %>
-
-                                <% if (request.status === 'in_progress') { %>
-                                    <span class="bg-blue-600 px-3 py-1 text-sm rounded-full">In Progress</span>
-                                <% } else if (request.status === 'resolved') { %>
-                                    <span class="bg-green-600 px-3 py-1 text-sm rounded-full">Resolved</span>
-                                <% } else { %>
-                                    <span class="bg-gray-600 px-3 py-1 text-sm rounded-full">Pending</span>
-                                <% } %>
+                            <div class="mt-4 flex gap-3 flex-wrap">
+                                <% if (request.status !=="resolved" ) { %>
+                                    <% if (request.status !=="in_progress" ) { %>
+                                        <button onclick="updateRequestStatus(<%= request.id %>, 'in_progress')"
+                                            class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm transition focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                            Mark In Progress
+                                        </button>
+                                        <% } %>
+                                            <button onclick="updateRequestStatus(<%= request.id %>, 'resolved')"
+                                                class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm transition focus:ring-2 focus:ring-green-500 focus:outline-none">
+                                                Mark Resolved
+                                            </button>
+                                            <% } %>
                             </div>
                         </div>
 
-                        <div class="mt-4 text-sm text-gray-300 space-y-1">
-                            <p><strong>Type:</strong>
-                                <%= request.type %>
-                            </p>
-                            <p><strong>Phone:</strong>
-                                <%= request.phone || "Not provided" %>
-                            </p>
-                            <p><strong>Location:</strong>
-                                <%= request.location || "Unknown" %>
-                            </p>
-                        </div>
-
-                        <div class="mt-4 flex gap-3 flex-wrap">
-                            <% if (request.status !== 'in_progress' && request.status !== 'resolved') { %>
-                            <button onclick="updateStatus('<%= request.id %>', 'in_progress')" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm transition">
-                                Mark In Progress
-                            </button>
+                            <% if (request.image) { %>
+                                <div
+                                    class="w-full md:w-48 shrink-0 overflow-hidden rounded-xl border border-gray-700 mt-4 md:mt-0 flex items-center justify-center bg-gray-900">
+                                    <img src="/uploads/<%= request.image %>"
+                                        class="w-full h-full object-cover max-h-48 md:max-h-full" alt="Request Image">
+                                </div>
+                                <% } %>
+                    </div>
+                <% }) %>
                             <% } %>
-                            <% if (request.status !== 'resolved') { %>
-                            <button onclick="updateStatus('<%= request.id %>', 'resolved')" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm transition">
-                                Mark Resolved
-                            </button>
-                            <% } %>
-                        </div>
 
                     </div>
-                    <% }) %>
-                        <% } %>
 
-    </div>
+                    <script>
+                        async function updateRequestStatus(id, status) {
+                            try {
+                                const response = await fetch(`/admin/request/${id}/status`, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ status })
+                                });
 
+                                if (response.ok) {
+                                    window.location.reload();
+                                } else {
+                                    alert('Failed to update status');
+                                }
+                            } catch (err) {
+                                console.error(err);
+                                alert('Error updating status');
+                            }
+                        }
+                    </script>
 </body>
 <script src="https://cdn.tailwindcss.com"></script>
-<script>
-    async function updateStatus(id, status) {
-        if (!confirm(`Are you sure you want to mark this request as ${status.replace('_', ' ')}?`)) return;
-        
-        try {
-            const res = await fetch(`/admin/request/${id}/status`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status })
-            });
-            const data = await res.json();
-            if (data.success) {
-                location.reload();
-            } else {
-                alert('Failed to update status');
-            }
-        } catch (error) {
-            console.error(error);
-            alert('Error updating status');
-        }
-    }
-</script>
+
 </html>
