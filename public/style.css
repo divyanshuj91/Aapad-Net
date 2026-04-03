@@ -24,6 +24,9 @@
 .table {
   display: table;
 }
+.h-full {
+  height: 100%;
+}
 .h-min {
   height: min-content;
 }
@@ -38,6 +41,9 @@
 }
 .flex-1 {
   flex: 1;
+}
+.shrink-0 {
+  flex-shrink: 0;
 }
 .transform {
   transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
@@ -57,9 +63,6 @@
 .items-center {
   align-items: center;
 }
-.items-end {
-  align-items: flex-end;
-}
 .items-start {
   align-items: flex-start;
 }
@@ -68,6 +71,9 @@
 }
 .justify-center {
   justify-content: center;
+}
+.overflow-hidden {
+  overflow: hidden;
 }
 .rounded-full {
   border-radius: calc(infinity * 1px);
@@ -80,9 +86,8 @@
   border-bottom-style: var(--tw-border-style);
   border-bottom-width: 1px;
 }
-.bg-gradient-to-br {
-  --tw-gradient-position: to bottom right in oklab;
-  background-image: linear-gradient(var(--tw-gradient-stops));
+.object-cover {
+  object-fit: cover;
 }
 .text-center {
   text-align: center;
@@ -100,13 +105,20 @@
   transition-timing-function: var(--tw-ease, ease);
   transition-duration: var(--tw-duration, 0s);
 }
-.duration-200 {
-  --tw-duration: 200ms;
-  transition-duration: 200ms;
-}
 .outline-none {
   --tw-outline-style: none;
   outline-style: none;
+}
+.file\:cursor-pointer {
+  &::file-selector-button {
+    cursor: pointer;
+  }
+}
+.file\:border-0 {
+  &::file-selector-button {
+    border-style: var(--tw-border-style);
+    border-width: 0px;
+  }
 }
 .hover\:scale-\[1\.02\] {
   &:hover {
@@ -164,10 +176,6 @@
   syntax: "*";
   inherits: false;
   initial-value: solid;
-}
-@property --tw-duration {
-  syntax: "*";
-  inherits: false;
 }
 @property --tw-shadow {
   syntax: "*";
@@ -258,7 +266,6 @@
       --tw-skew-x: initial;
       --tw-skew-y: initial;
       --tw-border-style: solid;
-      --tw-duration: initial;
       --tw-shadow: 0 0 #0000;
       --tw-shadow-color: initial;
       --tw-shadow-alpha: 100%;

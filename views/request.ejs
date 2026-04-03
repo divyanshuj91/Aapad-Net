@@ -78,6 +78,20 @@
                     </button>
                 </div>
             </div>
+            <!-- Upload Image -->
+            <div>
+                <label class="block text-sm mb-2 text-gray-300">
+                    Upload Image (Optional)
+                </label>
+
+                <input type="file" name="image" id="image" accept="image/*"
+                    class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-sm text-gray-300 file:bg-gray-800 file:border-0 file:px-4 file:py-2 file:rounded-md file:text-white file:cursor-pointer">
+
+                <!-- Preview -->
+                <div class="mt-3 hidden" id="previewContainer">
+                    <img id="previewImage" class="rounded-xl max-h-48 object-cover border border-gray-600">
+                </div>
+            </div>
 
             <!-- Submit -->
             <button type="submit"
@@ -94,12 +108,14 @@
 
     </div>
 
-    <script src="https://cdn.tailwindcss.com">
-
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
         const buttons = document.querySelectorAll(".urgency-btn");
         const hiddenInput = document.getElementById("urgency");
         const form = document.getElementById("form");
-
+        const imageInput = document.getElementById("image");
+        const previewImage = document.getElementById("previewImage");
+        const previewContainer = document.getElementById("previewContainer");
 
         buttons.forEach(btn => {
             btn.addEventListener("click", () => {
@@ -108,7 +124,6 @@
                     b.classList.add("bg-gray-700", "text-white");
                 });
 
-                // Apply active style to the clicked button
                 if (btn.dataset.value === "high") {
                     btn.classList.remove("bg-gray-700", "text-white");
                     btn.classList.add("bg-yellow-500", "text-black");
@@ -117,41 +132,59 @@
                     btn.classList.add("bg-red-600", "text-white");
                 }
 
-                // Store value in the hidden input
                 hiddenInput.value = btn.dataset.value;
             });
         });
 
+        imageInput.addEventListener("change", () => {
+            const file = imageInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                    previewContainer.classList.remove("hidden");
+                };
+                reader.readAsDataURL(file);
+            }
+        });
         // 3. Handle Form Submission
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
 
-            const data = {
-                name: document.getElementById("name").value,
-                phone: document.getElementById("phone").value,
-                type: document.getElementById("type").value,
-                location: document.getElementById("location").value,
-                urgency: hiddenInput.value
-            };
+            const formData = new FormData();
+            formData.append("name", document.getElementById("name").value);
+            formData.append("phone", document.getElementById("phone").value);
+            formData.append("type", document.getElementById("type").value);
+            formData.append("location", document.getElementById("location").value);
+            formData.append("urgency", hiddenInput.value);
 
-            if (!data.urgency && !data.type) {
+            const imageFile = document.getElementById("image").files[0];
+            if (imageFile) {
+                formData.append("image", imageFile);
+            }
+
+            if (!hiddenInput.value && !document.getElementById("type").value) {
                 alert("Please select urgency level");
                 return;
             }
 
             try {
-                await fetch("/request", {
+                const response = await fetch("/request", {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(data)
+                    body: formData
                 });
 
-                alert("Emergency Alert Sent!");
-
+                if (response.ok) {
+                    alert("Emergency Alert Sent!");
+                    form.reset();
+                } else {
+                    alert("Failed to send alert.");
+                }
 
             } catch (error) {
                 console.error("Error:", error);
-                alert("Failed to send alert. Please try again.");
+                alert("Server error.");
             }
         });
     </script>
