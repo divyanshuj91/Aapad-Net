@@ -4,7 +4,11 @@ import session from "express-session";
 import db from "./db.js";
 import multer from "multer";
 const app = express();
+import fs from "fs";
 
+if (!fs.existsSync("uploads")) {
+  fs.mkdirSync("uploads");
+}
 // --------------------
 // Middleware
 // --------------------
@@ -178,8 +182,13 @@ app.get("/admin", requireAdmin, (req, res) => {
         (err2, safeCount) => {
           if (err2) return res.status(500).send("Database error");
 
-          const criticalCount = requests.filter(r => r.urgency === 'critical' || (!r.urgency && r.type === 'medical')).length;
-          const highCount = requests.filter(r => r.urgency === 'high' || (!r.urgency && r.type !== 'medical')).length;
+          const criticalCount = requests.filter(
+            (r) =>
+              r.urgency === "critical" || (!r.urgency && r.type === "medical"),
+          ).length;
+          const highCount = requests.filter(
+            (r) => r.urgency === "high" || (!r.urgency && r.type !== "medical"),
+          ).length;
 
           res.render("admin", {
             requests,
