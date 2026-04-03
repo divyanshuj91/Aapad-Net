@@ -178,28 +178,15 @@ app.get("/admin", requireAdmin, (req, res) => {
         (err2, safeCount) => {
           if (err2) return res.status(500).send("Database error");
 
-          db.get(
-            "SELECT COUNT(*) as criticalCount FROM requests WHERE urgency = 'critical'",
-            [],
-            (err3, criticalData) => {
-              if (err3) return res.status(500).send("Database error");
+          const criticalCount = requests.filter(r => r.urgency === 'critical' || (!r.urgency && r.type === 'medical')).length;
+          const highCount = requests.filter(r => r.urgency === 'high' || (!r.urgency && r.type !== 'medical')).length;
 
-              db.get(
-                "SELECT COUNT(*) as highCount FROM requests WHERE urgency = 'high'",
-                [],
-                (err4, highData) => {
-                  if (err4) return res.status(500).send("Database error");
-
-                  res.render("admin", {
-                    requests,
-                    safeCount: safeCount.count,
-                    criticalCount: criticalData.criticalCount,
-                    highCount: highData.highCount,
-                  });
-                },
-              );
-            },
-          );
+          res.render("admin", {
+            requests,
+            safeCount: safeCount.count,
+            criticalCount,
+            highCount,
+          });
         },
       );
     },

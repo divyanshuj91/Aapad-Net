@@ -98,7 +98,7 @@
                                         <%= request.name %>
                                     </h2>
                                     <p class="text-sm text-gray-400">
-                                        <%= new Date(request.created_at + 'Z' ).toLocaleString('en-US', {
+                                        <%= new Date(request.created_at.replace(' ', 'T') + 'Z' ).toLocaleString('en-US', {
                                             dateStyle: 'medium' , timeStyle: 'short' }) %>
                                     </p>
                                 </div>
@@ -114,13 +114,13 @@
                                                 <span
                                                     class="bg-gray-600 px-3 py-1 text-sm rounded-full w-max h-min">Pending</span>
                                                 <% } %>
-                                                    <% if (request.type==="medical" ) { %>
+                                                    <% if (request.urgency === 'critical' || (!request.urgency && request.type === 'medical')) { %>
                                                         <span
                                                             class="bg-red-600 px-3 py-1 text-sm rounded-full w-max h-min">Critical</span>
-                                                        <% } else { %>
-                                                            <span
-                                                                class="bg-yellow-500 text-black px-3 py-1 text-sm rounded-full w-max h-min">High</span>
-                                                            <% } %>
+                                                    <% } else { %>
+                                                        <span
+                                                            class="bg-yellow-500 text-black px-3 py-1 text-sm rounded-full w-max h-min">High</span>
+                                                    <% } %>
                                 </div>
                             </div>
 
@@ -150,6 +150,7 @@
                                             </button>
                                             <% } %>
                             </div>
+                        </div>
 
                             <% if (request.image) { %>
                                 <div
@@ -158,8 +159,8 @@
                                         class="w-full h-full object-cover max-h-48 md:max-h-full" alt="Request Image">
                                 </div>
                                 <% } %>
-                        </div>
-                        <% }) %>
+                    </div>
+                <% }) %>
                             <% } %>
 
                     </div>
