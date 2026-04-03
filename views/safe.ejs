@@ -7,47 +7,43 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-gradient-to-br from-gray-900 to-gray-800 text-white min-h-screen flex items-center justify-center p-4">
+<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-4">
 
     <div
-        class="w-full max-w-lg bg-gray-800/80 backdrop-blur p-10 rounded-3xl shadow-2xl border border-gray-700 space-y-8">
+        class="w-full max-w-md bg-gray-800/80 backdrop-blur p-8 rounded-3xl shadow-2xl border border-gray-700 space-y-6">
 
         <div class="text-center space-y-2">
-            <h1 class="text-4xl font-bold text-green-400">🟢 Mark Yourself Safe</h1>
-            <p class="text-base text-gray-400">
+            <h1 class="text-3xl font-bold text-green-400">🟢 Mark Yourself Safe</h1>
+            <p class="text-sm text-gray-400">
                 Notify rescue teams that you are safe and out of danger.
             </p>
         </div>
 
-        <form id="safeForm" class="space-y-6">
+        <form id="safeForm" class="space-y-5">
 
             <div>
-                <label class="block text-base mb-3 text-gray-300">Full Name</label>
+                <label class="block text-sm mb-2 text-gray-300">Full Name</label>
                 <input type="text" id="name" required
-                    class="w-full px-5 py-4 bg-gray-700 rounded-xl border border-gray-600 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition text-base"
+                    class="w-full px-4 py-3 bg-gray-700 rounded-xl border border-gray-600 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition"
                     placeholder="Enter your name">
             </div>
 
             <div>
-                <label class="block text-base mb-3 text-gray-300">Current Location (Optional)</label>
+                <label class="block text-sm mb-2 text-gray-300">Current Location (Optional)</label>
                 <input type="text" id="location"
-                    class="w-full px-5 py-4 bg-gray-700 rounded-xl border border-gray-600 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition text-base"
+                    class="w-full px-4 py-3 bg-gray-700 rounded-xl border border-gray-600 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition"
                     placeholder="Nearby landmark or area">
             </div>
 
             <button id="submitBtn" type="submit"
-                class="w-full bg-green-600 hover:bg-green-700 py-4 rounded-xl font-semibold text-lg transition duration-200">
+                class="w-full bg-green-600 hover:bg-green-700 py-3 rounded-xl font-semibold text-lg transition duration-200">
                 Confirm Safe Status
             </button>
 
         </form>
 
-        <div id="successMessage" class="hidden text-center text-green-400 font-medium">
-            ✅ Your status has been marked safe.
-        </div>
-
-        <div class="text-center pt-2">
-            <a href="/" class="text-sm text-gray-400 hover:text-white transition">
+        <div class="text-center">
+            <a href="/" class="text-sm text-gray-400 hover:text-white">
                 ← Back to Home
             </a>
         </div>
@@ -55,36 +51,21 @@
     </div>
 
     <script>
-        const form = document.getElementById("safeForm");
-        const button = document.getElementById("submitBtn");
-        const successMessage = document.getElementById("successMessage");
-
-        form.addEventListener("submit", async (e) => {
+        document.getElementById("safeForm").addEventListener("submit", async (e) => {
             e.preventDefault();
-
-            button.disabled = true;
-            button.innerText = "Submitting...";
 
             const data = {
                 name: document.getElementById("name").value,
                 location: document.getElementById("location").value
             };
 
-            const response = await fetch("/safe", {
+            await fetch("/safe", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
             });
 
-            if (response.ok) {
-                form.reset();
-                successMessage.classList.remove("hidden");
-            } else {
-                alert("Something went wrong. Please try again.");
-            }
-
-            button.disabled = false;
-            button.innerText = "Confirm Safe Status";
+            alert("Your status has been marked safe.");
         });
     </script>
 

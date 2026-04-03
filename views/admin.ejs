@@ -53,7 +53,7 @@
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
 
         <div class="bg-green-600 rounded-xl p-4 text-center">
-            <p class="text-sm opacity-80">Safe People</p>
+            <p class="text-sm opacity-80">Safe</p>
             <p class="text-2xl font-bold">
                 <%= safeCount %>
             </p>
@@ -74,7 +74,7 @@
         </div>
 
         <div class="bg-gray-700 rounded-xl p-4 text-center">
-            <p class="text-sm opacity-80">Total Requests</p>
+            <p class="text-sm opacity-80">Total</p>
             <p class="text-2xl font-bold">
                 <%= requests.length %>
             </p>
@@ -89,7 +89,8 @@
             </div>
             <% } else { %>
                 <% requests.forEach(request=> { %>
-                    <div class="bg-gray-800 rounded-2xl p-5 shadow-lg border border-gray-700 flex flex-col md:flex-row gap-6">
+                    <div
+                        class="bg-gray-800 rounded-2xl p-5 shadow-lg border border-gray-700 flex flex-col md:flex-row gap-6">
                         <div class="flex-1">
                             <div class="flex justify-between items-start gap-4">
                                 <div>
@@ -97,7 +98,8 @@
                                         <%= request.name %>
                                     </h2>
                                     <p class="text-sm text-gray-400">
-                                        <%= new Date(request.created_at + 'Z').toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }) %>
+                                        <%= new Date(request.created_at + 'Z' ).toLocaleString('en-US', {
+                                            dateStyle: 'medium' , timeStyle: 'short' }) %>
                                     </p>
                                 </div>
 
@@ -148,46 +150,40 @@
                                             </button>
                                             <% } %>
                             </div>
+
+                            <% if (request.image) { %>
+                                <div
+                                    class="w-full md:w-48 shrink-0 overflow-hidden rounded-xl border border-gray-700 mt-4 md:mt-0 flex items-center justify-center bg-gray-900">
+                                    <img src="/uploads/<%= request.image %>"
+                                        class="w-full h-full object-cover max-h-48 md:max-h-full" alt="Request Image">
+                                </div>
+                                <% } %>
                         </div>
-                        
-                        <% if (request.image) { %>
-                            <div class="w-full md:w-48 shrink-0 overflow-hidden rounded-xl border border-gray-700 mt-4 md:mt-0 flex items-center justify-center bg-gray-900">
-                                <img src="/uploads/<%= request.image %>" class="w-full h-full object-cover max-h-48 md:max-h-full" alt="Request Image">
-                            </div>
-                        <% } %>
+                        <% }) %>
+                            <% } %>
+
                     </div>
-                <% }) %>
-            <% } %>
 
-    </div>
+                    <script>
+                        async function updateRequestStatus(id, status) {
+                            try {
+                                const response = await fetch(`/admin/request/${id}/status`, {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({ status })
+                                });
 
-    <script>
-        async function updateRequestStatus(id, status) {
-            const statusText = status === 'in_progress' ? 'in progress' : 'resolved';
-            const confirmed = confirm(`Are you sure you want to mark this request as ${statusText}?`);
-            
-            if (!confirmed) {
-                return;
-            }
-
-            try {
-                const response = await fetch(`/admin/request/${id}/status`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ status })
-                });
-
-                if (response.ok) {
-                    window.location.reload();
-                } else {
-                    alert('Failed to update status');
-                }
-            } catch (err) {
-                console.error(err);
-                alert('Error updating status');
-            }
-        }
-    </script>
+                                if (response.ok) {
+                                    window.location.reload();
+                                } else {
+                                    alert('Failed to update status');
+                                }
+                            } catch (err) {
+                                console.error(err);
+                                alert('Error updating status');
+                            }
+                        }
+                    </script>
 </body>
 <script src="https://cdn.tailwindcss.com"></script>
 

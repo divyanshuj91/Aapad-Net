@@ -205,13 +205,18 @@ app.get("/admin", requireAdmin, (req, res) => {
     },
   );
 });
+// Logout
+app.get("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/login");
+  });
+});
 
-// Update request status
 app.post("/admin/request/:id/status", requireAdmin, (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
 
-  if (!["in_progress", "resolved"].includes(status)) {
+  if (!["pending", "in_progress", "resolved"].includes(status)) {
     return res.status(400).send("Invalid status");
   }
 
