@@ -3,8 +3,9 @@ import cors from "cors";
 import session from "express-session";
 import db from "./db.js";
 import multer from "multer";
-const app = express();
 import fs from "fs";
+
+const app = express();
 
 if (!fs.existsSync("uploads")) {
   fs.mkdirSync("uploads");
@@ -81,6 +82,11 @@ app.post("/safe", (req, res) => {
 // Report Page
 app.get("/report", (req, res) => {
   res.render("report");
+});
+
+// Assist others page
+app.get("/assist", (req, res) => {
+  res.render("assist");
 });
 
 // Request form page
