@@ -35,3 +35,4 @@ npm-debug.log*
 .temp/
 database.sqlite
 alter.js
+database.sqlite
