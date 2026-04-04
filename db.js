@@ -37,7 +37,6 @@ const db = new sqlite3.Database(dbPath, async (err) => {
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `);
-<<<<<<< HEAD
 
   db.run(
     "ALTER TABLE requests ADD COLUMN status TEXT DEFAULT 'pending'",
@@ -45,8 +44,6 @@ const db = new sqlite3.Database(dbPath, async (err) => {
       // Ignore error if column already exists
     },
   );
-=======
->>>>>>> d99b8190baaaf723e2e5bc0f79ffdd4526b299e8
   db.run(`
   CREATE TABLE IF NOT EXISTS safe_people (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

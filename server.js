@@ -233,8 +233,6 @@ app.post("/admin/request/:id/status", requireAdmin, (req, res) => {
       res.json({ success: true });
     },
   );
-<<<<<<< HEAD
-=======
 });
 
 // Logout
@@ -242,7 +240,6 @@ app.get("/logout", (req, res) => {
   req.session.destroy(() => {
     res.redirect("/login");
   });
->>>>>>> d99b8190baaaf723e2e5bc0f79ffdd4526b299e8
 });
 
 // --------------------
