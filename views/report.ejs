@@ -1,13 +1,293 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <link rel="stylesheet" href="public/output.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report a Hazard | Aapad-Net</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
+<body class="bg-gray-900 text-white min-h-screen p-4 flex flex-col items-center">
+    <!-- Header -->
+    <div class="w-full max-w-md mt-6 mb-4">
+        <a href="/" class="text-blue-400 hover:text-blue-300 flex items-center gap-2 mb-4 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Back to Home
+        </a>
+    </div>
 
-<body class="bg-black">
-    <h1 class="text-white">UNDER DEVELOPMENT</h1>
+    <!-- Main Container -->
+    <div class="w-full max-w-md bg-gray-800 rounded-2xl shadow-xl border border-gray-700 p-6">
+        <h1 class="text-2xl font-bold mb-2 flex items-center justify-center gap-2">
+            <svg class="w-7 h-7 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            Report a Hazard
+        </h1>
+        <p class="text-gray-400 text-sm text-center mb-6">Use your camera to capture and report hazards like blocked roads, fires, or structural damage.</p>
+        
+        <form id="hazardForm" class="space-y-5">
+            <!-- Camera / Upload Source -->
+            <div>
+                <label class="block text-sm font-medium mb-2 text-gray-300">Hazard Photo</label>
+                <div class="mt-1 flex flex-col items-center justify-center border-2 border-gray-600 border-dashed rounded-xl hover:border-blue-500 transition-colors bg-gray-900/50 relative overflow-hidden min-h-[250px]">
+                    
+                    <!-- Live Camera Feed (Hidden Initially) -->
+                    <video id="camera-feed" class="w-full h-[250px] object-cover hidden" autoplay playsinline></video>
+                    
+                    <!-- Captured Image Preview (Hidden Initially) -->
+                    <img id="image-preview" src="#" alt="Hazard Preview" class="w-full h-[250px] object-cover hidden">
+                    
+                    <!-- Upload/Camera Prompt -->
+                    <div id="upload-prompt" class="space-y-4 text-center p-6 w-full">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                            <path d="M14 14h20m-10 10A5 5 0 1024 14a5 5 0 000 10zm-10 8h20a2 2 0 002-2V12a2 2 0 00-2-2H14a2 2 0 00-2 2v14a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <circle cx="24" cy="24" r="10" stroke="currentColor" stroke-width="2" />
+                            <circle cx="24" cy="24" r="4" fill="currentColor" />
+                        </svg>
+                        <div class="flex flex-col gap-3 max-w-xs mx-auto">
+                            <button type="button" id="start-camera-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                Open Camera
+                            </button>
+                            <label for="image" class="w-full bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 rounded-lg transition cursor-pointer text-center">
+                                Upload from File
+                            </label>
+                            <input id="image" name="image" type="file" accept="image/*" class="sr-only">
+                        </div>
+                    </div>
+
+                    <!-- Camera Controls Overlay (Hidden Initially) -->
+                    <div id="camera-controls" class="absolute bottom-4 left-0 right-0 flex justify-center gap-4 hidden">
+                        <button type="button" id="capture-btn" class="bg-white text-gray-900 font-bold py-2 px-6 rounded-full shadow-lg hover:bg-gray-200 transition">
+                            Capture
+                        </button>
+                        <button type="button" id="close-camera-btn" class="bg-gray-800/80 text-white font-medium py-2 px-4 rounded-full border border-gray-600 shadow hover:bg-gray-700 transition">
+                            Cancel
+                        </button>
+                    </div>
+
+                    <!-- Retake Control Overlay (Hidden Initially) -->
+                    <div id="retake-controls" class="absolute bottom-4 left-0 right-0 flex justify-center hidden">
+                        <button type="button" id="retake-btn" class="bg-gray-900/80 backdrop-blur text-white font-medium py-2 px-6 rounded-full border border-gray-600 shadow-lg hover:bg-gray-800 transition">
+                            Retake Photo
+                        </button>
+                    </div>
+                    
+                    <canvas id="camera-canvas" class="hidden"></canvas>
+                </div>
+            </div>
+
+            <!-- Location -->
+            <div>
+                <label class="block text-sm font-medium mb-1 text-gray-300">Location/Landmark</label>
+                <input type="text" id="location" name="location" required
+                    class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                    placeholder="E.g., Intersection of 5th Ave and Main St">
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label class="block text-sm font-medium mb-1 text-gray-300">Hazard Description</label>
+                <textarea id="description" name="description" rows="3" required
+                    class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition resize-none"
+                    placeholder="Describe the hazard (e.g., fallen tree blocking road, deep pothole)"></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit"
+                class="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3.5 rounded-xl transition shadow-lg flex justify-center items-center gap-2 overflow-hidden relative">
+                <span id="submit-text" class="flex items-center gap-2">
+                    Submit Hazard Report
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </span>
+                <span id="submit-spinner" class="hidden">
+                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </span>
+            </button>
+        </form>
+    </div>
+
+    <!-- Success Modal Notification (Hidden by default) -->
+    <div id="success-modal" class="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-gray-800 border border-gray-700 rounded-2xl p-6 w-full max-w-sm text-center transform scale-95 transition-transform duration-300">
+            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-900/50 mb-4">
+                <svg class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Report Submitted!</h3>
+            <p class="text-gray-400 text-sm mb-6">Thank you. The hazard has been logged and authorities have been notified.</p>
+            <a href="/" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl transition">
+                Return to Home
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        const form = document.getElementById('hazardForm');
+        const imageInput = document.getElementById('image');
+        const uploadPrompt = document.getElementById('upload-prompt');
+        const imagePreview = document.getElementById('image-preview');
+        
+        // Camera elements
+        const video = document.getElementById('camera-feed');
+        const canvas = document.getElementById('camera-canvas');
+        const startCameraBtn = document.getElementById('start-camera-btn');
+        const captureBtn = document.getElementById('capture-btn');
+        const closeCameraBtn = document.getElementById('close-camera-btn');
+        const retakeBtn = document.getElementById('retake-btn');
+        const cameraControls = document.getElementById('camera-controls');
+        const retakeControls = document.getElementById('retake-controls');
+        
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const submitText = document.getElementById('submit-text');
+        const submitSpinner = document.getElementById('submit-spinner');
+        const successModal = document.getElementById('success-modal');
+
+        let stream = null;
+        let capturedFile = null;
+
+        // 1. File Upload Logic
+        imageInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                capturedFile = file;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.classList.remove('hidden');
+                    uploadPrompt.classList.add('hidden');
+                    retakeControls.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // 2. Start Live Camera
+        startCameraBtn.addEventListener('click', async () => {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'environment' } 
+                });
+                video.srcObject = stream;
+                
+                video.classList.remove('hidden');
+                uploadPrompt.classList.add('hidden');
+                cameraControls.classList.remove('hidden');
+                retakeControls.classList.add('hidden');
+                imagePreview.classList.add('hidden');
+            } catch (err) {
+                console.error("Error accessing camera: ", err);
+                alert("Could not access camera. Please allow camera permissions or use 'Upload from File'.");
+            }
+        });
+
+        // 3. Capture Photo
+        captureBtn.addEventListener('click', () => {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Show image
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+            imagePreview.src = dataUrl;
+            
+            // Convert to a File object for formData
+            canvas.toBlob((blob) => {
+                capturedFile = new File([blob], "captured_hazard.jpg", { type: "image/jpeg" });
+            }, 'image/jpeg', 0.8);
+
+            stopCamera();
+            
+            video.classList.add('hidden');
+            cameraControls.classList.add('hidden');
+            
+            imagePreview.classList.remove('hidden');
+            retakeControls.classList.remove('hidden');
+        });
+
+        // 4. Close Camera
+        closeCameraBtn.addEventListener('click', () => {
+            stopCamera();
+            video.classList.add('hidden');
+            cameraControls.classList.add('hidden');
+            uploadPrompt.classList.remove('hidden');
+        });
+
+        // 5. Retake Photo
+        retakeBtn.addEventListener('click', () => {
+            imagePreview.classList.add('hidden');
+            retakeControls.classList.add('hidden');
+            uploadPrompt.classList.remove('hidden');
+            capturedFile = null;
+            imageInput.value = ''; // Reset standard file input
+        });
+
+        function stopCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
+        }
+
+        // 6. Handle Form Submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // UI indicate loading state
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-80', 'cursor-not-allowed');
+            submitText.classList.add('hidden');
+            submitSpinner.classList.remove('hidden');
+
+            const formData = new FormData();
+            formData.append('location', document.getElementById('location').value);
+            formData.append('description', document.getElementById('description').value);
+            
+            if (capturedFile) {
+               formData.append('image', capturedFile);
+            } else {
+               alert("Please take a photo or upload an image of the hazard.");
+               resetSubmitButton();
+               return;
+            }
+
+            try {
+                const res = await fetch('/report', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    successModal.classList.remove('hidden');
+                    // slight delay for transition
+                    setTimeout(() => {
+                        successModal.classList.remove('opacity-0');
+                        successModal.querySelector('div').classList.remove('scale-95');
+                        successModal.querySelector('div').classList.add('scale-100');
+                    }, 50);
+                } else {
+                    alert(data.message || 'Error saving report');
+                    resetSubmitButton();
+                }
+            } catch (error) {
+                console.error(error);
+                alert('Connection error. Please try again.');
+                resetSubmitButton();
+            }
+        });
+
+        function resetSubmitButton() {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('opacity-80', 'cursor-not-allowed');
+            submitText.classList.remove('hidden');
+            submitSpinner.classList.add('hidden');
+        }
+    </script>
 </body>
-<script src="https://cdn.tailwindcss.com"></script>
-
 </html>
