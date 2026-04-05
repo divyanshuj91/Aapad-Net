@@ -147,6 +147,40 @@ app.post("/request", upload.single("image"), (req, res) => {
   );
 });
 
+// Handle hazard report submission
+app.post("/report", upload.single("image"), (req, res) => {
+  const { description, location } = req.body;
+
+  if (!description || !location) {
+    return res.status(400).send("Description and location required");
+  }
+
+  const imagePath = req.file ? req.file.filename : null;
+
+  const query = `
+    INSERT INTO hazards 
+    (description, location, image) 
+    VALUES (?, ?, ?)
+  `;
+
+  db.run(
+    query,
+    [description, location, imagePath],
+    function (err) {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Database error");
+      }
+
+      res.json({
+        success: true,
+        message: "Hazard reported successfully",
+        id: this.lastID,
+      });
+    },
+  );
+});
+
 // Login page
 app.get("/login", (req, res) => {
   res.render("login");
@@ -188,20 +222,29 @@ app.get("/admin", requireAdmin, (req, res) => {
         (err2, safeCount) => {
           if (err2) return res.status(500).send("Database error");
 
-          const criticalCount = requests.filter(
-            (r) =>
-              r.urgency === "critical" || (!r.urgency && r.type === "medical"),
-          ).length;
-          const highCount = requests.filter(
-            (r) => r.urgency === "high" || (!r.urgency && r.type !== "medical"),
-          ).length;
+          db.all(
+            "SELECT * FROM hazards ORDER BY created_at DESC",
+            [],
+            (err3, hazards) => {
+              if (err3) return res.status(500).send("Database error");
 
-          res.render("admin", {
-            requests,
-            safeCount: safeCount.count,
-            criticalCount,
-            highCount,
-          });
+              const criticalCount = requests.filter(
+                (r) =>
+                  r.urgency === "critical" || (!r.urgency && r.type === "medical"),
+              ).length;
+              const highCount = requests.filter(
+                (r) => r.urgency === "high" || (!r.urgency && r.type !== "medical"),
+              ).length;
+
+              res.render("admin", {
+                requests,
+                hazards,
+                safeCount: safeCount.count,
+                criticalCount,
+                highCount,
+              });
+            }
+          );
         },
       );
     },
@@ -233,6 +276,51 @@ app.post("/admin/request/:id/status", requireAdmin, (req, res) => {
       res.json({ success: true });
     },
   );
+});
+
+app.delete("/admin/request/:id", requireAdmin, (req, res) => {
+  const { id } = req.params;
+
+  db.run("DELETE FROM requests WHERE id = ?", [id], function (err) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Database error");
+    }
+    res.json({ success: true });
+  });
+});
+
+app.post("/admin/hazard/:id/status", requireAdmin, (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  if (!["pending", "in_progress", "resolved"].includes(status)) {
+    return res.status(400).send("Invalid status");
+  }
+
+  db.run(
+    "UPDATE hazards SET status = ? WHERE id = ?",
+    [status, id],
+    function (err) {
+      if (err) {
+        console.error(err);
+        return res.status(500).send("Database error");
+      }
+      res.json({ success: true });
+    },
+  );
+});
+
+app.delete("/admin/hazard/:id", requireAdmin, (req, res) => {
+  const { id } = req.params;
+
+  db.run("DELETE FROM hazards WHERE id = ?", [id], function (err) {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Database error");
+    }
+    res.json({ success: true });
+  });
 });
 
 // Logout
