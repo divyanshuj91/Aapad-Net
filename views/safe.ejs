@@ -1,55 +1,84 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>Aapad-Net | Mark Safe</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Safe | Aapad-Net</title>
     <link rel="stylesheet" href="/style.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+<body class="font-['Open_Sans'] bg-gray-50 text-gray-900 min-h-screen flex flex-col antialiased">
 
-<body class="bg-gray-900 text-white min-h-screen flex items-center justify-center p-4">
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-100 px-6 sm:px-12 py-5 flex justify-between items-center sticky top-0 z-50">
+        <a href="/" class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900">
+            Aapad<span class="text-blue-600">-Net</span>
+        </a>
+        <a href="/" class="text-sm font-medium text-gray-500 hover:text-black transition">
+            &larr; Back
+        </a>
+    </header>
 
-    <div class="w-full max-w-md bg-gray-800 p-6 rounded-2xl shadow-lg space-y-6">
+    <main class="flex-1 flex items-center justify-center px-4 py-16">
+        <div class="w-full max-w-md bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8">
+            <div class="text-center mb-8">
+                <div class="w-14 h-14 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900">Mark Yourself Safe</h2>
+                <p class="text-sm text-gray-500 mt-1">Let rescue teams know you are safe and do not need assistance.</p>
+            </div>
 
-        <div class="text-center">
-            <h1 class="text-3xl font-bold text-green-500">🟢 I'm Safe</h1>
-            <p class="text-sm text-gray-400 mt-2">
-                Let rescue teams know you are safe.
-            </p>
+            <form id="safeForm" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-900 mb-2">Your Name <span class="text-red-500">*</span></label>
+                    <input type="text" id="name" required
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 outline-none focus:border-blue-500 focus:bg-white transition"
+                        placeholder="Enter your full name">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-semibold text-gray-900 mb-2">Current Location <span class="text-gray-400 font-normal">(Optional)</span></label>
+                    <input type="text" id="location"
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 outline-none focus:border-blue-500 focus:bg-white transition"
+                        placeholder="Nearby landmark or area">
+                </div>
+
+                <button type="submit"
+                    class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3.5 rounded-xl shadow-sm transition">
+                    Confirm Safe Status
+                </button>
+            </form>
         </div>
+    </main>
 
-        <form id="safeForm" class="space-y-4">
-
-            <div>
-                <label class="block text-sm mb-1 text-gray-300">Your Name</label>
-                <input type="text" id="name" required
-                    class="w-full px-4 py-3 bg-gray-700 rounded-lg border border-gray-600 focus:ring-2 focus:ring-green-500 outline-none"
-                    placeholder="Enter your name">
+    <!-- Success Modal -->
+    <div id="success-modal" class="fixed inset-0 bg-gray-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-sm text-center transform scale-95 transition-transform duration-300">
+            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-50 mb-6 text-green-500">
+                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
             </div>
-
-            <div>
-                <label class="block text-sm mb-1 text-gray-300">Current Location (Optional)</label>
-                <input type="text" id="location"
-                    class="w-full px-4 py-3 bg-gray-700 rounded-lg border border-gray-600 focus:ring-2 focus:ring-green-500 outline-none"
-                    placeholder="Nearby landmark">
-            </div>
-
-            <button type="submit" class="w-full bg-green-600 hover:bg-green-700 py-3 rounded-xl font-bold text-lg">
-                Confirm Safe Status
-            </button>
-
-        </form>
-
-        <div class="text-center">
-            <a href="/" class="text-sm text-gray-400 hover:text-white">
-                ← Back to Home
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Status Confirmed</h3>
+            <p class="text-gray-500 text-sm mb-8">Your safe status has been recorded successfully.</p>
+            <a href="/" class="block w-full bg-gray-900 hover:bg-black text-white font-medium py-3 rounded-xl transition">
+                Return to Home
             </a>
         </div>
-
     </div>
 
+    <!-- Footer -->
+    <footer class="border-t border-gray-100 py-8 text-center text-sm text-gray-400 mt-auto bg-white w-full">
+        <p>Aapad-Net Platform &copy; 2026</p>
+    </footer>
+
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        document.getElementById("safeForm").addEventListener("submit", async (e) => {
+        const form = document.getElementById("safeForm");
+        const successModal = document.getElementById("success-modal");
+
+        form.addEventListener("submit", async (e) => {
             e.preventDefault();
 
             const data = {
@@ -57,16 +86,28 @@
                 location: document.getElementById("location").value
             };
 
-            await fetch("/safe", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
-            });
+            try {
+                const res = await fetch("/safe", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
 
-            alert("Your status has been marked safe.");
+                if (res.ok) {
+                    successModal.classList.remove("hidden");
+                    setTimeout(() => {
+                        successModal.classList.remove("opacity-0");
+                        successModal.querySelector("div").classList.remove("scale-95");
+                        successModal.querySelector("div").classList.add("scale-100");
+                    }, 50);
+                } else {
+                    alert("Failed to submit. Please try again.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Connection error. Please retry.");
+            }
         });
     </script>
-
 </body>
-
 </html>
