@@ -1,12 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aapad-Net | Emergency Request</title>
+    <title>Emergency Request | Aapad-Net</title>
     <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
+<body class="font-['Open_Sans'] bg-gray-50 text-gray-900 min-h-screen flex flex-col antialiased">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-100 px-6 sm:px-12 py-5 flex justify-between items-center sticky top-0 z-50">
+        <a href="/" class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900">
+            Aapad<span class="text-blue-600">-Net</span>
+        </a>
+        <a href="/" class="text-sm font-medium text-gray-500 hover:text-black transition">
+            &larr; Back
+        </a>
+    </header>
+
+    <main class="flex-1 flex flex-col items-center py-12 px-4 w-full">
+        <div class="w-full max-w-lg bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8">
+            <h2 class="text-2xl font-bold mb-2 text-gray-900">Emergency Request</h2>
+            <p class="text-gray-500 text-sm mb-8">Submit only if immediate assistance is required.</p>
+
+            <form id="form" class="space-y-5">
+                <!-- Name -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-900 mb-2">Full Name <span class="text-red-500">*</span></label>
+                    <input type="text" id="name" required
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 outline-none focus:border-blue-500 focus:bg-white transition"
+                        placeholder="Your name">
+                </div>
 
 <body class="bg-gray-900 text-white min-h-screen flex sm:items-center justify-center sm:p-4">
 
@@ -73,10 +98,16 @@
                         High
                     </button>
 
-                    <button type="button" data-value="critical"
-                        class="urgency-btn flex-1 bg-gray-700 py-2 rounded-lg font-semibold border border-gray-600">
-                        Critical
-                    </button>
+                <!-- Type -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-900 mb-2">Type of Assistance</label>
+                    <select id="type"
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 outline-none focus:border-blue-500 focus:bg-white transition">
+                        <option value="medical">Medical Emergency</option>
+                        <option value="food">Food & Water</option>
+                        <option value="rescue">Rescue Required</option>
+                        <option value="shelter">Shelter Needed</option>
+                    </select>
                 </div>
             </div>
             <!-- Camera / Upload Source -->
@@ -126,22 +157,68 @@
 
                     <canvas id="camera-canvas" class="hidden"></canvas>
                 </div>
-            </div>
 
-            <!-- Submit -->
-            <button type="submit"
-                class="w-full bg-red-600 hover:bg-red-700 transition py-3 rounded-xl font-bold text-lg">
-                Send Emergency Alert
-            </button>
+                <!-- Urgency -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-900 mb-2">Urgency Level</label>
+                    <input type="hidden" id="urgency" name="urgency" value="">
+                    <div class="flex gap-3">
+                        <button type="button" data-value="high"
+                            class="urgency-btn flex-1 bg-gray-50 border border-gray-200 py-2.5 rounded-xl font-semibold text-sm text-gray-700 hover:bg-gray-100 transition">
+                            High
+                        </button>
+                        <button type="button" data-value="critical"
+                            class="urgency-btn flex-1 bg-gray-50 border border-gray-200 py-2.5 rounded-xl font-semibold text-sm text-gray-700 hover:bg-gray-100 transition">
+                            Critical
+                        </button>
+                    </div>
+                </div>
 
-        </form>
+                <!-- Upload Image -->
+                <div>
+                    <label class="block text-sm font-semibold text-gray-900 mb-2">Upload Image <span class="text-gray-400 font-normal">(Optional)</span></label>
+                    <input type="file" name="image" id="image" accept="image/*"
+                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm text-gray-600 file:bg-blue-600 file:border-0 file:px-4 file:py-1.5 file:rounded-lg file:text-white file:text-sm file:font-medium file:cursor-pointer file:mr-3">
+                    <div class="mt-3 hidden" id="previewContainer">
+                        <img id="previewImage" class="rounded-xl max-h-48 object-cover border border-gray-200">
+                    </div>
+                </div>
 
-        <!-- Back -->
-        <div class="text-center">
-            <a href="/" class="text-sm text-gray-400 hover:text-white">← Back to Status</a>
+                <!-- Submit -->
+                <button type="submit"
+                    class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3.5 rounded-xl shadow-sm transition flex justify-center items-center gap-2">
+                    <span id="submit-text">Send Emergency Alert</span>
+                    <span id="submit-spinner" class="hidden">
+                        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </span>
+                </button>
+            </form>
         </div>
+    </main>
 
+    <!-- Success Modal -->
+    <div id="success-modal" class="fixed inset-0 bg-gray-900/40 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-sm text-center transform scale-95 transition-transform duration-300">
+            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-50 mb-6 text-green-500">
+                <svg class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Alert Sent</h3>
+            <p class="text-gray-500 text-sm mb-8">Your emergency request has been submitted successfully.</p>
+            <a href="/" class="block w-full bg-gray-900 hover:bg-black text-white font-medium py-3 rounded-xl transition">
+                Return to Home
+            </a>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-100 py-8 text-center text-sm text-gray-400 mt-auto bg-white w-full">
+        <p>Aapad-Net Platform &copy; 2026</p>
+    </footer>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -168,16 +245,16 @@
         buttons.forEach(btn => {
             btn.addEventListener("click", () => {
                 buttons.forEach(b => {
-                    b.classList.remove("bg-yellow-500", "bg-red-600", "text-black", "text-white");
-                    b.classList.add("bg-gray-700", "text-white");
+                    b.classList.remove("bg-amber-500", "bg-red-600", "text-white", "border-amber-500", "border-red-600");
+                    b.classList.add("bg-gray-50", "text-gray-700", "border-gray-200");
                 });
 
                 if (btn.dataset.value === "high") {
-                    btn.classList.remove("bg-gray-700", "text-white");
-                    btn.classList.add("bg-yellow-500", "text-black");
+                    btn.classList.remove("bg-gray-50", "text-gray-700", "border-gray-200");
+                    btn.classList.add("bg-amber-500", "text-white", "border-amber-500");
                 } else if (btn.dataset.value === "critical") {
-                    btn.classList.remove("bg-gray-700");
-                    btn.classList.add("bg-red-600", "text-white");
+                    btn.classList.remove("bg-gray-50", "text-gray-700", "border-gray-200");
+                    btn.classList.add("bg-red-600", "text-white", "border-red-600");
                 }
 
                 hiddenInput.value = btn.dataset.value;
@@ -269,6 +346,11 @@
         form.addEventListener("submit", async (e) => {
             e.preventDefault();
 
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            submitText.classList.add('hidden');
+            submitSpinner.classList.remove('hidden');
+
             const formData = new FormData();
             formData.append("name", document.getElementById("name").value);
             formData.append("phone", document.getElementById("phone").value);
@@ -280,11 +362,6 @@
                 formData.append("image", selectedFile);
             }
 
-            if (!hiddenInput.value && !document.getElementById("type").value) {
-                alert("Please select urgency level");
-                return;
-            }
-
             try {
                 const response = await fetch("/request", {
                     method: "POST",
@@ -292,19 +369,29 @@
                 });
 
                 if (response.ok) {
-                    alert("Emergency Alert Sent!");
-                    form.reset();
+                    successModal.classList.remove('hidden');
+                    setTimeout(() => {
+                        successModal.classList.remove('opacity-0');
+                        successModal.querySelector('div').classList.remove('scale-95');
+                        successModal.querySelector('div').classList.add('scale-100');
+                    }, 50);
                 } else {
                     alert("Failed to send alert.");
+                    resetSubmitButton();
                 }
-
             } catch (error) {
                 console.error("Error:", error);
-                alert("Server error.");
+                alert("Connection error.");
+                resetSubmitButton();
             }
         });
+
+        function resetSubmitButton() {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            submitText.classList.remove('hidden');
+            submitSpinner.classList.add('hidden');
+        }
     </script>
-
 </body>
-
 </html>

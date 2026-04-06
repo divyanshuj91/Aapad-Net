@@ -3,7 +3,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Google Sans", "sans-serif"],
+        sans: ["Open Sans", "sans-serif"],
       },
     },
   },
