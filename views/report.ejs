@@ -3,117 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Report Hazard | Aapad-Net</title>
+    <title>Report a Hazard | Aapad-Net</title>
     <link rel="stylesheet" href="/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="font-['Open_Sans'] bg-gray-50 text-gray-900 min-h-screen flex flex-col antialiased">
-
+<body class="bg-gray-900 text-white min-h-screen p-4 flex flex-col items-center">
     <!-- Header -->
-    <header class="bg-white border-b border-gray-100 px-4 sm:px-12 py-3.5 sm:py-5 flex justify-between items-center sticky top-0 z-50">
-        <a href="/" class="text-lg sm:text-2xl font-bold tracking-tight text-gray-900">
-            Aapad<span class="text-blue-600">-Net</span>
+    <div class="w-full max-w-md mt-6 mb-4">
+        <a href="/" class="text-blue-400 hover:text-blue-300 flex items-center gap-2 mb-4 transition">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            Back to Home
         </a>
-        <a href="/" class="text-xs sm:text-sm font-medium text-gray-500 hover:text-black transition">
-            &larr; Back
-        </a>
-    </header>
+    </div>
 
-    <main class="flex-1 flex flex-col items-center py-6 sm:py-12 px-4 w-full">
-        <div class="w-full max-w-lg bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 p-5 sm:p-8">
-            <h2 class="text-xl sm:text-2xl font-bold mb-1 sm:mb-2 text-gray-900">Report Hazard</h2>
-            <p class="text-gray-500 text-xs sm:text-sm mb-6">Upload a photo to report obstructed roads, infrastructure damage, etc.</p>
-            
-            <form id="hazardForm" class="space-y-5">
-                <!-- Camera / Upload -->
-                <div>
-                    <label class="block text-sm font-semibold mb-2 text-gray-900">Evidence Photo <span class="text-red-500">*</span></label>
-                    <div class="flex flex-col items-center justify-center border-2 border-gray-200 border-dashed rounded-xl bg-gray-50 relative overflow-hidden min-h-[200px] sm:min-h-[250px]">
-                        
-                        <video id="camera-feed" class="w-full h-[200px] sm:h-[250px] object-cover hidden" autoplay playsinline></video>
-                        <img id="image-preview" src="#" alt="Hazard Preview" class="w-full h-[200px] sm:h-[250px] object-cover hidden">
-                        
-                        <div id="upload-prompt" class="space-y-3 text-center p-4 sm:p-6 w-full">
-                            <svg class="mx-auto h-8 w-8 sm:h-10 sm:w-10 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                <path d="M14 14h20m-10 10A5 5 0 1024 14a5 5 0 000 10zm-10 8h20a2 2 0 002-2V12a2 2 0 00-2-2H14a2 2 0 00-2 2v14a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                <circle cx="24" cy="24" r="10" stroke="currentColor" stroke-width="2" />
-                            </svg>
-                            <div class="flex gap-2 w-full">
-                                <button type="button" id="start-camera-btn" class="flex-1 bg-gray-900 hover:bg-black text-white font-medium py-2.5 px-3 rounded-lg shadow-sm transition flex items-center justify-center gap-1.5 text-xs sm:text-sm active:scale-95">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                                    Camera
-                                </button>
-                                <label for="image" class="flex-1 bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 font-medium py-2.5 px-3 rounded-lg shadow-sm transition cursor-pointer text-center flex items-center justify-center text-xs sm:text-sm active:scale-95">
-                                    Upload
-                                </label>
-                                <input id="image" name="image" type="file" accept="image/*" class="sr-only">
-                            </div>
-                        </div>
-
-                        <div id="camera-controls" class="absolute bottom-3 left-0 right-0 flex justify-center gap-3 hidden">
-                            <button type="button" id="capture-btn" class="bg-white text-gray-900 font-bold py-2 px-5 rounded-full shadow-lg border border-gray-200 text-sm active:scale-95 transition">Capture</button>
-                            <button type="button" id="close-camera-btn" class="bg-gray-900/80 text-white font-medium py-2 px-4 rounded-full text-sm active:scale-95 transition">Cancel</button>
-                        </div>
-
-                        <div id="retake-controls" class="absolute bottom-3 left-0 right-0 flex justify-center hidden">
-                            <button type="button" id="retake-btn" class="bg-white/90 text-gray-900 font-medium py-2 px-5 rounded-full shadow border border-gray-200 text-sm active:scale-95 transition">Retake</button>
-                        </div>
-                        
-                        <canvas id="camera-canvas" class="hidden"></canvas>
-                    </div>
-                </div>
-
-                <!-- Location -->
-                <div>
-                    <label class="block text-sm font-semibold mb-1.5 text-gray-900">Location <span class="text-red-500">*</span></label>
-                    <input type="text" id="location" name="location" required
-                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 sm:px-4 sm:py-3 text-sm text-gray-900 outline-none focus:border-blue-500 focus:bg-white transition"
-                        placeholder="E.g., Near district hospital">
-                </div>
-
-                <!-- Description -->
-                <div>
-                    <label class="block text-sm font-semibold mb-1.5 text-gray-900">Description <span class="text-red-500">*</span></label>
-                    <textarea id="description" name="description" rows="3" required
-                        class="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 sm:px-4 sm:py-3 text-sm text-gray-900 outline-none focus:border-blue-500 focus:bg-white transition resize-none"
-                        placeholder="Describe the hazard..."></textarea>
-                </div>
-
-                <!-- Submit -->
-                <button type="submit"
-                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 sm:py-3.5 rounded-xl shadow-sm transition flex justify-center items-center gap-2 active:scale-[0.98]">
-                    <span id="submit-text">Submit Report</span>
-                    <span id="submit-spinner" class="hidden">
-                        <svg class="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    <!-- Main Container -->
+    <div class="w-full max-w-md bg-gray-800 rounded-2xl shadow-xl border border-gray-700 p-6">
+        <h1 class="text-2xl font-bold mb-2 flex items-center justify-center gap-2">
+            <svg class="w-7 h-7 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+            Report a Hazard
+        </h1>
+        <p class="text-gray-400 text-sm text-center mb-6">Use your camera to capture and report hazards like blocked roads, fires, or structural damage.</p>
+        
+        <form id="hazardForm" class="space-y-5">
+            <!-- Camera / Upload Source -->
+            <div>
+                <label class="block text-sm font-medium mb-2 text-gray-300">Hazard Photo</label>
+                <div class="mt-1 flex flex-col items-center justify-center border-2 border-gray-600 border-dashed rounded-xl hover:border-blue-500 transition-colors bg-gray-900/50 relative overflow-hidden min-h-[250px]">
+                    
+                    <!-- Live Camera Feed (Hidden Initially) -->
+                    <video id="camera-feed" class="w-full h-[250px] object-cover hidden" autoplay playsinline></video>
+                    
+                    <!-- Captured Image Preview (Hidden Initially) -->
+                    <img id="image-preview" src="#" alt="Hazard Preview" class="w-full h-[250px] object-cover hidden">
+                    
+                    <!-- Upload/Camera Prompt -->
+                    <div id="upload-prompt" class="space-y-4 text-center p-6 w-full">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                            <path d="M14 14h20m-10 10A5 5 0 1024 14a5 5 0 000 10zm-10 8h20a2 2 0 002-2V12a2 2 0 00-2-2H14a2 2 0 00-2 2v14a2 2 0 002 2z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <circle cx="24" cy="24" r="10" stroke="currentColor" stroke-width="2" />
+                            <circle cx="24" cy="24" r="4" fill="currentColor" />
                         </svg>
-                    </span>
-                </button>
-            </form>
-        </div>
-    </main>
+                        <div class="flex flex-col gap-3 max-w-xs mx-auto">
+                            <button type="button" id="start-camera-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition flex items-center justify-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                Open Camera
+                            </button>
+                            <label for="image" class="w-full bg-gray-700 hover:bg-gray-600 text-white font-medium py-2 rounded-lg transition cursor-pointer text-center">
+                                Upload from File
+                            </label>
+                            <input id="image" name="image" type="file" accept="image/*" class="sr-only">
+                        </div>
+                    </div>
 
-    <!-- Success Modal -->
-    <div id="success-modal" class="fixed inset-0 bg-gray-900/40 backdrop-blur-sm flex items-end sm:items-center justify-center p-0 sm:p-4 z-50 hidden opacity-0 transition-opacity duration-300">
-        <div class="bg-white rounded-t-2xl sm:rounded-2xl shadow-xl p-6 sm:p-8 w-full sm:max-w-sm text-center transform translate-y-4 sm:scale-95 transition-all duration-300">
-            <div class="mx-auto flex items-center justify-center h-14 w-14 rounded-full bg-green-50 mb-5 text-green-500">
-                <svg class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <!-- Camera Controls Overlay (Hidden Initially) -->
+                    <div id="camera-controls" class="absolute bottom-4 left-0 right-0 flex justify-center gap-4 hidden">
+                        <button type="button" id="capture-btn" class="bg-white text-gray-900 font-bold py-2 px-6 rounded-full shadow-lg hover:bg-gray-200 transition">
+                            Capture
+                        </button>
+                        <button type="button" id="close-camera-btn" class="bg-gray-800/80 text-white font-medium py-2 px-4 rounded-full border border-gray-600 shadow hover:bg-gray-700 transition">
+                            Cancel
+                        </button>
+                    </div>
+
+                    <!-- Retake Control Overlay (Hidden Initially) -->
+                    <div id="retake-controls" class="absolute bottom-4 left-0 right-0 flex justify-center hidden">
+                        <button type="button" id="retake-btn" class="bg-gray-900/80 backdrop-blur text-white font-medium py-2 px-6 rounded-full border border-gray-600 shadow-lg hover:bg-gray-800 transition">
+                            Retake Photo
+                        </button>
+                    </div>
+                    
+                    <canvas id="camera-canvas" class="hidden"></canvas>
+                </div>
+            </div>
+
+            <!-- Location -->
+            <div>
+                <label class="block text-sm font-medium mb-1 text-gray-300">Location/Landmark</label>
+                <input type="text" id="location" name="location" required
+                    class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition"
+                    placeholder="E.g., Intersection of 5th Ave and Main St">
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label class="block text-sm font-medium mb-1 text-gray-300">Hazard Description</label>
+                <textarea id="description" name="description" rows="3" required
+                    class="w-full bg-gray-900 border border-gray-700 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition resize-none"
+                    placeholder="Describe the hazard (e.g., fallen tree blocking road, deep pothole)"></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit"
+                class="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3.5 rounded-xl transition shadow-lg flex justify-center items-center gap-2 overflow-hidden relative">
+                <span id="submit-text" class="flex items-center gap-2">
+                    Submit Hazard Report
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </span>
+                <span id="submit-spinner" class="hidden">
+                    <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                </span>
+            </button>
+        </form>
+    </div>
+
+    <!-- Success Modal Notification (Hidden by default) -->
+    <div id="success-modal" class="fixed inset-0 bg-black/80 flex items-center justify-center p-4 z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-gray-800 border border-gray-700 rounded-2xl p-6 w-full max-w-sm text-center transform scale-95 transition-transform duration-300">
+            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-900/50 mb-4">
+                <svg class="h-8 w-8 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
             </div>
-            <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2">Report Submitted</h3>
-            <p class="text-gray-500 text-sm mb-6">Your report has been logged successfully.</p>
-            <a href="/" class="block w-full bg-gray-900 hover:bg-black text-white font-medium py-3 rounded-xl transition active:scale-[0.98]">
+            <h3 class="text-xl font-bold text-white mb-2">Report Submitted!</h3>
+            <p class="text-gray-400 text-sm mb-6">Thank you. The hazard has been logged and authorities have been notified.</p>
+            <a href="/" class="block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 rounded-xl transition">
                 Return to Home
             </a>
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="border-t border-gray-100 py-5 sm:py-8 text-center text-xs sm:text-sm text-gray-400 mt-auto bg-white w-full">
-        <p>Aapad-Net Platform &copy; 2026</p>
-    </footer>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -121,6 +130,8 @@
         const imageInput = document.getElementById('image');
         const uploadPrompt = document.getElementById('upload-prompt');
         const imagePreview = document.getElementById('image-preview');
+        
+        // Camera elements
         const video = document.getElementById('camera-feed');
         const canvas = document.getElementById('camera-canvas');
         const startCameraBtn = document.getElementById('start-camera-btn');
@@ -129,13 +140,16 @@
         const retakeBtn = document.getElementById('retake-btn');
         const cameraControls = document.getElementById('camera-controls');
         const retakeControls = document.getElementById('retake-controls');
+        
         const submitBtn = form.querySelector('button[type="submit"]');
         const submitText = document.getElementById('submit-text');
         const submitSpinner = document.getElementById('submit-spinner');
         const successModal = document.getElementById('success-modal');
+
         let stream = null;
         let capturedFile = null;
 
+        // 1. File Upload Logic
         imageInput.addEventListener('change', function() {
             const file = this.files[0];
             if (file) {
@@ -151,36 +165,51 @@
             }
         });
 
+        // 2. Start Live Camera
         startCameraBtn.addEventListener('click', async () => {
             try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { facingMode: 'environment' } 
+                });
                 video.srcObject = stream;
+                
                 video.classList.remove('hidden');
                 uploadPrompt.classList.add('hidden');
                 cameraControls.classList.remove('hidden');
                 retakeControls.classList.add('hidden');
                 imagePreview.classList.add('hidden');
             } catch (err) {
-                alert("Could not access camera. Please use 'Upload' instead.");
+                console.error("Error accessing camera: ", err);
+                alert("Could not access camera. Please allow camera permissions or use 'Upload from File'.");
             }
         });
 
+        // 3. Capture Photo
         captureBtn.addEventListener('click', () => {
             canvas.width = video.videoWidth;
             canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Show image
             const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
             imagePreview.src = dataUrl;
+            
+            // Convert to a File object for formData
             canvas.toBlob((blob) => {
                 capturedFile = new File([blob], "captured_hazard.jpg", { type: "image/jpeg" });
             }, 'image/jpeg', 0.8);
+
             stopCamera();
+            
             video.classList.add('hidden');
             cameraControls.classList.add('hidden');
+            
             imagePreview.classList.remove('hidden');
             retakeControls.classList.remove('hidden');
         });
 
+        // 4. Close Camera
         closeCameraBtn.addEventListener('click', () => {
             stopCamera();
             video.classList.add('hidden');
@@ -188,60 +217,74 @@
             uploadPrompt.classList.remove('hidden');
         });
 
+        // 5. Retake Photo
         retakeBtn.addEventListener('click', () => {
             imagePreview.classList.add('hidden');
             retakeControls.classList.add('hidden');
             uploadPrompt.classList.remove('hidden');
             capturedFile = null;
-            imageInput.value = '';
+            imageInput.value = ''; // Reset standard file input
         });
 
         function stopCamera() {
-            if (stream) { stream.getTracks().forEach(track => track.stop()); stream = null; }
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                stream = null;
+            }
         }
 
+        // 6. Handle Form Submission
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
+            
+            // UI indicate loading state
             submitBtn.disabled = true;
-            submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            submitBtn.classList.add('opacity-80', 'cursor-not-allowed');
             submitText.classList.add('hidden');
             submitSpinner.classList.remove('hidden');
 
             const formData = new FormData();
             formData.append('location', document.getElementById('location').value);
             formData.append('description', document.getElementById('description').value);
+            
             if (capturedFile) {
                formData.append('image', capturedFile);
             } else {
-               alert("Please capture or upload a photo.");
+               alert("Please take a photo or upload an image of the hazard.");
                resetSubmitButton();
                return;
             }
 
             try {
-                const res = await fetch('/report', { method: 'POST', body: formData });
+                const res = await fetch('/report', {
+                    method: 'POST',
+                    body: formData
+                });
+                
                 const data = await res.json();
+                
                 if (data.success) {
                     successModal.classList.remove('hidden');
+                    // slight delay for transition
                     setTimeout(() => {
                         successModal.classList.remove('opacity-0');
-                        const modal = successModal.querySelector('div');
-                        modal.classList.remove('translate-y-4', 'scale-95');
-                        modal.classList.add('translate-y-0', 'scale-100');
+                        successModal.querySelector('div').classList.remove('scale-95');
+                        successModal.querySelector('div').classList.add('scale-100');
                     }, 50);
                 } else {
-                    alert(data.message || 'Error submitting report.');
+                    alert(data.message || 'Error saving report');
                     resetSubmitButton();
                 }
             } catch (error) {
-                alert('Connection failed. Please retry.');
+                console.error(error);
+                alert('Connection error. Please try again.');
                 resetSubmitButton();
             }
         });
 
         function resetSubmitButton() {
             submitBtn.disabled = false;
-            submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            submitBtn.classList.remove('opacity-80', 'cursor-not-allowed');
             submitText.classList.remove('hidden');
             submitSpinner.classList.add('hidden');
         }
