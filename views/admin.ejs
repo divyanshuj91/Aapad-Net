@@ -16,6 +16,11 @@
             <span class="text-sm font-normal text-gray-400 ml-2 hidden sm:inline">Control Panel</span>
         </a>
         <div class="flex items-center gap-3">
+            <select id="viewFilter" class="bg-gray-50 border border-gray-200 hover:bg-gray-100 text-gray-700 px-4 py-2 rounded-xl text-sm font-medium transition outline-none cursor-pointer">
+                <option value="all">All Reports</option>
+                <option value="emergencies">Emergency Requests</option>
+                <option value="hazards">Hazard Reports</option>
+            </select>
             <a href="/admin"
                 class="flex items-center gap-2 bg-gray-50 border border-gray-200 hover:bg-gray-100 text-gray-700 px-4 py-2 rounded-xl text-sm font-medium transition">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
@@ -52,9 +57,10 @@
         </div>
 
         <!-- Emergency Requests Section -->
-        <div class="mb-6">
-            <h2 class="text-xl font-bold text-gray-900 border-b border-gray-200 pb-3">Emergency Requests</h2>
-        </div>
+        <div id="emergenciesSection">
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-900 border-b border-gray-200 pb-3">Emergency Requests</h2>
+            </div>
         <div class="space-y-4 mb-12">
             <% if (!requests || requests.length === 0) { %>
                 <div class="bg-white border border-gray-200 rounded-2xl p-8 text-center text-gray-400">
@@ -126,14 +132,16 @@
                 <% }) %>
             <% } %>
         </div>
+        </div>
 
         <!-- Hazard Reports Section -->
-        <div class="mb-6">
-            <h2 class="text-xl font-bold text-gray-900 border-b border-gray-200 pb-3 flex items-center gap-2">
-                <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                Hazard Reports
-            </h2>
-        </div>
+        <div id="hazardsSection">
+            <div class="mb-6">
+                <h2 class="text-xl font-bold text-gray-900 border-b border-gray-200 pb-3 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    Hazard Reports
+                </h2>
+            </div>
         <div class="space-y-4 mb-12">
             <% if (!hazards || hazards.length === 0) { %>
                 <div class="bg-white border border-gray-200 rounded-2xl p-8 text-center text-gray-400">
@@ -196,6 +204,7 @@
                 <% }) %>
             <% } %>
         </div>
+        </div>
     </main>
 
     <!-- Footer -->
@@ -205,6 +214,23 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        document.getElementById('viewFilter').addEventListener('change', function(e) {
+            const val = e.target.value;
+            const emergenciesSec = document.getElementById('emergenciesSection');
+            const hazardsSec = document.getElementById('hazardsSection');
+            
+            if (val === 'all') {
+                emergenciesSec.style.display = 'block';
+                hazardsSec.style.display = 'block';
+            } else if (val === 'emergencies') {
+                emergenciesSec.style.display = 'block';
+                hazardsSec.style.display = 'none';
+            } else if (val === 'hazards') {
+                emergenciesSec.style.display = 'none';
+                hazardsSec.style.display = 'block';
+            }
+        });
+
         async function updateStatus(id, status) {
             if (!confirm(`Mark this request as ${status.replace('_', ' ')}?`)) return;
             try {
