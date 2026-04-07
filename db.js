@@ -14,7 +14,7 @@ const dbPath = path.resolve(__dirname, "database.sqlite");
 
 const db = new sqlite3.Database(dbPath, async (err) => {
   if (err) {
-    console.error("❌ Error connecting to SQLite:", err.message);
+    console.error("❌ Error connecting to SQLit e:", err.message);
     return;
   }
 
