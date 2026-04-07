@@ -35,81 +35,75 @@
 
         </div>
 
-    </div>
-
-    <main class="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-10">
-
-        <div class="text-center mb-12 flex flex-col items-center">
-            <h1 class="text-5xl sm:text-7xl font-extrabold tracking-tight mb-3">
-                <span
-                    class="bg-gradient-to-r from-red-600 via-red-500 to-orange-500 text-transparent bg-clip-text drop-shadow-sm">
-                    Aapad
-                </span>
-                <span
-                    class="bg-gradient-to-br from-slate-100 via-slate-300 to-slate-500 text-transparent bg-clip-text ml-[-8px]">
-                    -Net
-                </span>
+    <main class="flex-1 flex flex-col items-center py-8 sm:py-16 px-4 sm:px-12 w-full max-w-5xl mx-auto">
+        <!-- Hero Section -->
+        <div class="w-full text-center mb-8 sm:mb-16">
+            <h1 class="text-3xl sm:text-6xl font-bold tracking-tight mb-3 sm:mb-6 text-gray-900 leading-tight">
+                Disaster Response. <br><span class="text-blue-600">Simplified.</span>
             </h1>
-
-            <h2 class="text-sm sm:text-base font-bold text-slate-400 tracking-[0.25em] uppercase mb-8">
-                Offline Disaster Response Portal
-            </h2>
-
-            <p
-                class="text-slate-300 text-sm sm:text-base max-w-md mx-auto leading-relaxed bg-slate-800/40 border border-slate-700/50 px-6 py-4 rounded-2xl shadow-inner">
-                <span class="block text-emerald-400 font-bold tracking-wide mb-1.5">
-                    <span class="inline-block w-2 h-2 bg-emerald-500 rounded-full mr-1.5 animate-pulse"></span>
-                    You are connected.
-                </span>
-
-                <span class="block text-slate-300/90">
-                    Tell us your situation so we can respond quickly and effectively.
-                </span>
+            <p class="text-sm sm:text-lg text-gray-500 max-w-2xl mx-auto leading-relaxed px-2">
+                Request emergency assistance, report hazards, and coordinate relief efforts.
             </p>
-
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 w-full max-w-3xl">
-
-            <a href="/request"
-                class="sm:col-span-2 bg-gradient-to-b bg-red-600 hover:bg-red-700 text-white py-6 sm:py-8 rounded-2xl shadow-xl 
-              text-xl sm:text-2xl font-bold text-center transition transform hover:scale-[1.02] active:scale-95 animate-pulse">
-                🚨 I Need Immediate Help
+        <!-- Action Cards Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-6 w-full">
+            <a href="/request" class="group bg-white border border-gray-200 rounded-xl sm:rounded-2xl p-5 sm:p-8 hover:border-gray-900 hover:shadow-lg transition-all duration-300 active:scale-[0.98]">
+                <div class="flex sm:block items-center gap-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gray-50 rounded-full flex items-center justify-center text-gray-600 group-hover:bg-gray-900 group-hover:text-white transition-colors sm:mb-6 shrink-0">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-base sm:text-xl font-semibold text-gray-900 mb-0.5 sm:mb-2">Request Help</h3>
+                        <p class="text-gray-500 text-xs sm:text-base leading-relaxed">Submit an urgent request for medical, rescue, or supply assistance.</p>
+                    </div>
+                </div>
             </a>
 
-            <a href="/safe" class="bg-green-600 hover:bg-green-700 text-white py-5 sm:py-6 rounded-2xl shadow-lg 
-    text-lg sm:text-xl font-semibold text-center transition transform hover:scale-[1.02] active:scale-95">
-                ✅ I Am Safe
+            <a href="/safe" class="group bg-white border border-gray-200 rounded-xl sm:rounded-2xl p-5 sm:p-8 hover:border-gray-900 hover:shadow-lg transition-all duration-300 active:scale-[0.98]">
+                <div class="flex sm:block items-center gap-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gray-50 rounded-full flex items-center justify-center text-gray-600 group-hover:bg-gray-900 group-hover:text-white transition-colors sm:mb-6 shrink-0">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-base sm:text-xl font-semibold text-gray-900 mb-0.5 sm:mb-2">Mark Safe</h3>
+                        <p class="text-gray-500 text-xs sm:text-base leading-relaxed">Register your safe status to reduce search and rescue load.</p>
+                    </div>
+                </div>
             </a>
 
-            <a href="/report"
-                class="bg-gradient-to-b bg-amber-500 hover:bg-amber-600 text-black py-5 sm:py-6 rounded-2xl shadow-lg 
-    text-lg sm:text-xl font-semibold text-center transition transform hover:scale-[1.02] active:scale-95 flex flex-col items-center justify-center leading-tight px-2">
-                <span>🚧 Report Hazard</span>
-                <span class="text-sm font-medium opacity-80 mt-1">(Blocked Road / Danger)</span>
+            <a href="/report" class="group bg-white border border-gray-200 rounded-xl sm:rounded-2xl p-5 sm:p-8 hover:border-gray-900 hover:shadow-lg transition-all duration-300 active:scale-[0.98]">
+                <div class="flex sm:block items-center gap-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gray-50 rounded-full flex items-center justify-center text-gray-600 group-hover:bg-gray-900 group-hover:text-white transition-colors sm:mb-6 shrink-0">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-base sm:text-xl font-semibold text-gray-900 mb-0.5 sm:mb-2">Report Hazard</h3>
+                        <p class="text-gray-500 text-xs sm:text-base leading-relaxed">Alert authorities regarding blocked roads or damages.</p>
+                    </div>
+                </div>
             </a>
 
-            <a href="/assist"
-                class="bg-lime-500 hover:bg-lime-600 text-black py-5 sm:py-6 rounded-2xl shadow-lg 
-    text-lg sm:text-xl font-semibold text-center transition transform hover:scale-[1.02] active:scale-95 flex flex-col items-center justify-center leading-tight px-2">
-                <span>🆘 Assist Others</span>
-                <span class="text-sm font-medium opacity-80 mt-1">(Provide Help / Alert Authorities)</span>
+            <a href="/assist" class="group bg-white border border-gray-200 rounded-xl sm:rounded-2xl p-5 sm:p-8 hover:border-gray-900 hover:shadow-lg transition-all duration-300 active:scale-[0.98]">
+                <div class="flex sm:block items-center gap-4">
+                    <div class="w-10 h-10 sm:w-12 sm:h-12 bg-gray-50 rounded-full flex items-center justify-center text-gray-600 group-hover:bg-gray-900 group-hover:text-white transition-colors sm:mb-6 shrink-0">
+                        <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-base sm:text-xl font-semibold text-gray-900 mb-0.5 sm:mb-2">Volunteer</h3>
+                        <p class="text-gray-500 text-xs sm:text-base leading-relaxed">Offer resources or manpower to assist affected citizens.</p>
+                    </div>
+                </div>
             </a>
 
         </div>
 
     </main>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <script>
-        if (
-            window.location.hostname !== "192.168.137.1" &&
-            window.location.hostname !== "localhost"
-        ) {
-            window.location.href = "http://192.168.0.127:3000";
-        }
-    </script>
+    <!-- Footer -->
+    <footer class="border-t border-gray-100 py-5 sm:py-8 text-center text-xs sm:text-sm text-gray-400 mt-auto bg-white">
+        <p>Aapad-Net Platform &copy; 2026</p>
+    </footer>
 
 </body>
 

@@ -79,59 +79,39 @@
                 <%= requests.length %>
             </p>
         </div>
-
-    </div>
-    <!-- View Toggle Dropdown -->
-    <div class="mb-6 flex justify-end items-center border-b border-gray-800 pb-4">
-        <select id="view-selector" class="bg-gray-800 border border-gray-700 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 outline-none cursor-pointer shadow-lg w-full md:w-auto">
-            <option value="emergency">🚨 Emergency Requests</option>
-            <option value="hazards">⚠️ Hazard Reports</option>
-        </select>
-    </div>
-
-    <!-- Emergency Requests Section -->
-    <div id="emergency-section">
-        <div class="mb-4">
-            <h2 class="text-2xl font-bold border-b border-gray-700 pb-2 text-white">Emergency Requests</h2>
-        </div>
-        <div class="space-y-4 mb-20">
-
-        <% if (!requests || requests.length===0) { %>
-            <div class="bg-gray-800 p-6 rounded-xl text-center text-gray-400">
-                No active requests.
-            </div>
+        <div class="space-y-4 mb-12">
+            <% if (!requests || requests.length === 0) { %>
+                <div class="bg-white border border-gray-200 rounded-2xl p-8 text-center text-gray-400">
+                    No active requests.
+                </div>
             <% } else { %>
                 <% requests.forEach(request=> { %>
                     <div
                         class="bg-gray-800 rounded-2xl p-5 shadow-lg border border-gray-700 flex flex-col md:flex-row gap-6">
                         <div class="flex-1">
-                            <div class="flex flex-col sm:flex-row sm:justify-between items-start gap-3 sm:gap-4 break-words overflow-hidden">
-                                <div class="max-w-full">
-                                    <h2 class="text-xl font-semibold break-words">
-                                        <%= request.name %>
-                                    </h2>
+                            <div class="flex justify-between items-start gap-4">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900"><%= request.name %></h3>
                                     <p class="text-sm text-gray-400">
-                                        <%= new Date(request.created_at.replace(' ', 'T') + 'Z'
-                                            ).toLocaleString('en-US', { dateStyle: 'medium' , timeStyle: 'short' }) %>
+                                        <%= new Date(request.created_at.replace(' ', 'T') + 'Z').toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }) %>
                                     </p>
                                 </div>
+                                <div class="flex flex-col items-end gap-2">
+                                    <% if (request.urgency === "critical") { %>
+                                        <span class="bg-red-100 text-red-700 px-3 py-1 text-xs font-semibold rounded-full">Critical</span>
+                                    <% } else if (request.urgency === "high") { %>
+                                        <span class="bg-amber-100 text-amber-700 px-3 py-1 text-xs font-semibold rounded-full">High</span>
+                                    <% } else { %>
+                                        <span class="bg-gray-100 text-gray-600 px-3 py-1 text-xs font-semibold rounded-full">Normal</span>
+                                    <% } %>
 
-                                <div class="flex flex-wrap sm:flex-col items-start sm:items-end gap-2 mt-2 sm:mt-0 whitespace-nowrap">
-                                    <% if (request.urgency==="critical" ) { %>
-                                        <span class="bg-red-600 px-3 py-1 text-sm rounded-full">Critical</span>
-                                        <% } else if (request.urgency==="high" ) { %>
-                                            <span class="bg-yellow-500 text-black px-3 py-1 text-sm rounded-full">High</span>
-                                            <% } else { %>
-                                                <span class="bg-gray-500 text-white px-3 py-1 text-sm rounded-full">Normal</span>
-                                                <% } %>
-
-                                                    <% if (request.status==='in_progress' ) { %>
-                                                        <span class="bg-blue-600 px-3 py-1 text-sm rounded-full">In Progress</span>
-                                                        <% } else if (request.status==='resolved' ) { %>
-                                                            <span class="bg-green-600 px-3 py-1 text-sm rounded-full">Resolved</span>
-                                                            <% } else { %>
-                                                                <span class="bg-gray-600 px-3 py-1 text-sm rounded-full">Pending</span>
-                                                                <% } %>
+                                    <% if (request.status === 'in_progress') { %>
+                                        <span class="bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold rounded-full">In Progress</span>
+                                    <% } else if (request.status === 'resolved') { %>
+                                        <span class="bg-green-100 text-green-700 px-3 py-1 text-xs font-semibold rounded-full">Resolved</span>
+                                    <% } else { %>
+                                        <span class="bg-gray-100 text-gray-600 px-3 py-1 text-xs font-semibold rounded-full">Pending</span>
+                                    <% } %>
                                 </div>
                             </div>
 
@@ -147,155 +127,129 @@
                                 </p>
                             </div>
 
-                            <div class="mt-4 flex flex-col sm:flex-row gap-2 sm:gap-3 flex-wrap">
-                                <% if (request.status !=='in_progress' && request.status !=='resolved' ) { %>
+                            <div class="mt-4 flex gap-3 flex-wrap">
+                                <% if (request.status !== 'in_progress' && request.status !== 'resolved') { %>
                                     <button onclick="updateStatus('<%= request.id %>', 'in_progress')"
-                                        class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm transition text-center whitespace-nowrap">
+                                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition">
                                         Mark In Progress
                                     </button>
-                                    <% } %>
-                                        <% if (request.status !=='resolved' ) { %>
-                                            <button onclick="updateStatus('<%= request.id %>', 'resolved')"
-                                                class="w-full sm:w-auto bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm transition text-center whitespace-nowrap">
-                                                Mark Resolved
-                                            </button>
-                                            <% } else { %>
-                                                <button onclick="deleteRequest('<%= request.id %>')"
-                                                    class="w-full sm:w-auto bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-sm transition text-center whitespace-nowrap">
-                                                    Delete Request
-                                                </button>
-                                                <% } %>
+                                <% } %>
+                                <% if (request.status !== 'resolved') { %>
+                                    <button onclick="updateStatus('<%= request.id %>', 'resolved')"
+                                        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition">
+                                        Mark Resolved
+                                    </button>
+                                <% } else { %>
+                                    <button onclick="deleteRequest('<%= request.id %>')"
+                                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition">
+                                        Delete
+                                    </button>
+                                <% } %>
                             </div>
                         </div>
 
                         <% if (request.image) { %>
-                            <div
-                                class="w-full md:w-48 shrink-0 overflow-hidden rounded-xl border border-gray-700 mt-4 md:mt-0 flex items-center justify-center bg-gray-900">
-                                <img src="/uploads/<%= request.image %>"
-                                    class="w-full h-full object-cover max-h-48 md:max-h-full" alt="Request Image">
+                            <div class="w-full md:w-48 shrink-0 overflow-hidden rounded-xl border border-gray-200 flex items-center justify-center bg-gray-50">
+                                <img src="/uploads/<%= request.image %>" class="w-full h-full object-cover max-h-48 md:max-h-full" alt="Request Image">
                             </div>
-                            <% } %>
-                    </div>
-                    <% }) %>
                         <% } %>
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
 
-        </div> <!-- End space-y for emergency -->
-    </div> <!-- End emergency-section -->
-
-    <!-- Hazard Reports Section -->
-    <div id="hazards-section" class="hidden">
-        <div class="mb-4">
-            <h2 class="text-2xl font-bold border-b border-gray-700 pb-2 text-yellow-500 flex items-center gap-2">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z">
-                    </path>
-                </svg>
+        <!-- Hazard Reports Section -->
+        <div class="mb-6">
+            <h2 class="text-xl font-bold text-gray-900 border-b border-gray-200 pb-3 flex items-center gap-2">
+                <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                 Hazard Reports
             </h2>
         </div>
-        <div class="space-y-4 mb-20">
-        <% if (!hazards || hazards.length===0) { %>
-            <div class="bg-gray-800 p-6 rounded-xl text-center text-gray-400">
-                No active hazard reports.
-            </div>
+        <div class="space-y-4 mb-12">
+            <% if (!hazards || hazards.length === 0) { %>
+                <div class="bg-white border border-gray-200 rounded-2xl p-8 text-center text-gray-400">
+                    No active hazard reports.
+                </div>
             <% } else { %>
-                <% hazards.forEach(hazard=> { %>
-                    <div
-                        class="bg-gray-800 rounded-2xl p-5 shadow-lg border border-gray-700 flex flex-col md:flex-row gap-6">
+                <% hazards.forEach(hazard => { %>
+                    <div class="bg-white rounded-2xl border border-gray-200 p-5 flex flex-col md:flex-row gap-6">
                         <div class="flex-1">
-                            <div class="flex flex-col sm:flex-row sm:justify-between items-start gap-3 sm:gap-4 break-words overflow-hidden">
-                                <div class="max-w-full">
-                                    <h2 class="text-xl font-semibold break-words">
-                                        Hazard Report #<%= hazard.id %>
-                                    </h2>
+                            <div class="flex justify-between items-start gap-4">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900">Hazard Report #<%= hazard.id %></h3>
                                     <p class="text-sm text-gray-400">
-                                        <%= new Date(hazard.created_at.replace(' ', 'T') + 'Z'
-                                            ).toLocaleString('en-US', { dateStyle: 'medium' , timeStyle: 'short' }) %>
+                                        <%= new Date(hazard.created_at.replace(' ', 'T') + 'Z').toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }) %>
                                     </p>
                                 </div>
-                                <div class="flex flex-wrap sm:flex-col items-start sm:items-end gap-2 mt-2 sm:mt-0 whitespace-nowrap">
-                                    <% if (hazard.status==='in_progress' ) { %>
-                                        <span class="bg-blue-600 px-3 py-1 text-sm rounded-full">In Progress</span>
-                                        <% } else if (hazard.status==='resolved' ) { %>
-                                            <span class="bg-green-600 px-3 py-1 text-sm rounded-full">Resolved</span>
-                                            <% } else { %>
-                                                <span class="bg-gray-600 px-3 py-1 text-sm rounded-full">Pending</span>
-                                                <% } %>
+                                <div class="flex flex-col items-end gap-2">
+                                    <% if (hazard.status === 'in_progress') { %>
+                                        <span class="bg-blue-100 text-blue-700 px-3 py-1 text-xs font-semibold rounded-full">In Progress</span>
+                                    <% } else if (hazard.status === 'resolved') { %>
+                                        <span class="bg-green-100 text-green-700 px-3 py-1 text-xs font-semibold rounded-full">Resolved</span>
+                                    <% } else { %>
+                                        <span class="bg-gray-100 text-gray-600 px-3 py-1 text-xs font-semibold rounded-full">Pending</span>
+                                    <% } %>
                                 </div>
                             </div>
 
-                            <div class="mt-4 text-sm text-gray-300 space-y-1">
-                                <p><strong>Location:</strong>
-                                    <%= hazard.location %>
-                                </p>
-                                <p><strong>Description:</strong>
-                                    <%= hazard.description %>
-                                </p>
+                            <div class="mt-4 text-sm text-gray-600 space-y-1">
+                                <p><strong class="text-gray-800">Location:</strong> <%= hazard.location %></p>
+                                <p><strong class="text-gray-800">Description:</strong> <%= hazard.description %></p>
                             </div>
 
-                            <div class="mt-4 flex flex-col sm:flex-row gap-2 sm:gap-3 flex-wrap">
-                                <% if (hazard.status !=='in_progress' && hazard.status !=='resolved' ) { %>
+                            <div class="mt-4 flex gap-3 flex-wrap">
+                                <% if (hazard.status !== 'in_progress' && hazard.status !== 'resolved') { %>
                                     <button onclick="updateHazardStatus('<%= hazard.id %>', 'in_progress')"
-                                        class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm transition text-center whitespace-nowrap">
+                                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition">
                                         Mark In Progress
                                     </button>
-                                    <% } %>
-                                        <% if (hazard.status !=='resolved' ) { %>
-                                            <button onclick="updateHazardStatus('<%= hazard.id %>', 'resolved')"
-                                                class="w-full sm:w-auto bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg text-sm transition text-center whitespace-nowrap">
-                                                Mark Resolved
-                                            </button>
-                                            <% } else { %>
-                                                <button onclick="deleteHazard('<%= hazard.id %>')"
-                                                    class="w-full sm:w-auto bg-red-600 hover:bg-red-700 px-4 py-2 rounded-lg text-sm transition text-center whitespace-nowrap">
-                                                    Delete Hazard
-                                                </button>
-                                                <% } %>
+                                <% } %>
+                                <% if (hazard.status !== 'resolved') { %>
+                                    <button onclick="updateHazardStatus('<%= hazard.id %>', 'resolved')"
+                                        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition">
+                                        Mark Resolved
+                                    </button>
+                                <% } else { %>
+                                    <button onclick="deleteHazard('<%= hazard.id %>')"
+                                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition">
+                                        Delete
+                                    </button>
+                                <% } %>
                             </div>
                         </div>
 
                         <% if (hazard.image) { %>
-                            <div
-                                class="w-full md:w-48 shrink-0 overflow-hidden rounded-xl border border-gray-700 mt-4 md:mt-0 flex items-center justify-center bg-gray-900">
-                                <img src="/uploads/<%= hazard.image %>"
-                                    class="w-full h-full object-cover max-h-48 md:max-h-full" alt="Hazard Image">
+                            <div class="w-full md:w-48 shrink-0 overflow-hidden rounded-xl border border-gray-200 flex items-center justify-center bg-gray-50">
+                                <img src="/uploads/<%= hazard.image %>" class="w-full h-full object-cover max-h-48 md:max-h-full" alt="Hazard Image">
                             </div>
-                            <% } %>
-                    </div>
-                    <% }) %>
                         <% } %>
-        </div> <!-- End space-y for hazards -->
-    </div> <!-- End hazards-section -->
+                    </div>
+                <% }) %>
+            <% } %>
+        </div>
+    </main>
 
-</body>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-    document.getElementById('view-selector').addEventListener('change', function(e) {
-        const val = e.target.value;
-        if (val === 'emergency') {
-            document.getElementById('emergency-section').classList.remove('hidden');
-            document.getElementById('hazards-section').classList.add('hidden');
-        } else {
-            document.getElementById('emergency-section').classList.add('hidden');
-            document.getElementById('hazards-section').classList.remove('hidden');
-        }
-    });
+    <!-- Footer -->
+    <footer class="border-t border-gray-100 py-8 text-center text-sm text-gray-400 mt-auto bg-white w-full">
+        <p>Aapad-Net Platform &copy; 2026</p>
+    </footer>
 
-    async function updateStatus(id, status) {
-        if (!confirm(`Are you sure you want to mark this request as ${status.replace('_', ' ')}?`)) return;
-
-        try {
-            const res = await fetch(`/admin/request/${id}/status`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status })
-            });
-            const data = await res.json();
-            if (data.success) {
-                location.reload();
-            } else {
-                alert('Failed to update status');
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        async function updateStatus(id, status) {
+            if (!confirm(`Mark this request as ${status.replace('_', ' ')}?`)) return;
+            try {
+                const res = await fetch(`/admin/request/${id}/status`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+                const data = await res.json();
+                if (data.success) location.reload();
+                else alert('Failed to update status');
+            } catch (error) {
+                console.error(error);
+                alert('Error updating status');
             }
         } catch (error) {
             console.error(error);
