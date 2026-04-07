@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aapad-Net</title>
+    <title>Aapad-Net | Home</title>
     <link rel="stylesheet" href="/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body class="font-['Open_Sans'] bg-gray-50 text-gray-900 min-h-screen flex flex-col antialiased">
@@ -24,11 +26,20 @@
                 <span class="hidden sm:inline">System</span>
                 <%= status %>
             </span>
-            <a href="/login" class="text-xs sm:text-sm font-medium text-gray-700 hover:text-black transition">
-                Login
-            </a>
         </div>
-    </header>
+
+        <div
+            class="inline-flex items-center gap-3 bg-slate-800 border border-slate-700 px-5 py-2.5 rounded-full shadow-sm">
+
+            <span class="text-red-500 text-sm font-bold tracking-wider">ADMIN?</span>
+            <span class="text-slate-600">|</span>
+            <a href="/login"
+                class="text-cyan-400 hover:text-cyan-300 text-sm font-semibold transition flex items-center gap-1">
+
+                Login here <span aria-hidden="true">→</span>
+            </a>
+
+        </div>
 
     <main class="flex-1 flex flex-col items-center py-8 sm:py-16 px-4 sm:px-12 w-full max-w-5xl mx-auto">
         <!-- Hero Section -->
@@ -117,7 +128,9 @@
                     </div>
                 </div>
             </a>
+
         </div>
+
     </main>
 
     <!-- Footer -->
